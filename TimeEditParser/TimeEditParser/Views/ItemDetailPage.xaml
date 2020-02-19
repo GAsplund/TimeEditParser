@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TimeEditParser.Views.ItemDetailPage"
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <StackLayout Spacing="20" Padding="15" BackgroundColor="{DynamicResource PageBackgroundColor}">
+        <Label Text="Location:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.location}" FontSize="Small" x:Name="LocationLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="Starts at:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.startTime}" FontSize="Small" x:Name="StartTimeLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="Ends at:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.endTime}" FontSize="Small" x:Name="EndTimeLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="ID:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.id}" FontSize="Small" x:Name="IdNumLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Button Text="Remove only this lesson" Clicked="RemoveLesson" TextColor="{DynamicResource PrimaryTextColor}" BackgroundColor="{DynamicResource NavigationBarColor}"/>
+        <Button Text="Remove all lessons of this type" Clicked="RemoveLessonName" TextColor="{DynamicResource PrimaryTextColor}" BackgroundColor="{DynamicResource NavigationBarColor}"/>
+    </StackLayout>
+    
+</ContentPage>

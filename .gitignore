@@ -1,0 +1,4 @@
+﻿.vs
+TimeEditParser/TimeEditParser.iOS/bin
+TimeEditParser/TimeEditParser.Android/bin
+TimeEditParser/TimeEditParser.Android/obj

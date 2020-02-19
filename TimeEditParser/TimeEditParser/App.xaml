@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TimeEditParser.App">
+
+    <Application.Resources>
+        <ResourceDictionary Source="Themes/DarkTheme.xaml" />
+
+        <Style x:Key="LargeLabelStyle"
+               TargetType="{x:Type Label}">
+            <Setter Property="TextColor"
+                    Value="{DynamicResource PrimaryTextColor}" />
+        </Style>
+
+        <Style x:Key="MediumLabelStyle"
+               TargetType="{x:Type Page}">
+            <Setter Property="BackgroundColor"
+                    Value="{DynamicResource PageBackgroundColor}" />
+        </Style>
+
+        <Style x:Key="SmallLabelStyle"
+               TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="{DynamicResource TertiaryTextColor}" />
+            <Setter Property="FontSize"
+                    Value="13" />
+        </Style>
+
+        <!--<Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
+            <Setter Property="BarTextColor" Value="{DynamicResource PrimaryTextColor}"/>
+        </Style>-->
+
+    </Application.Resources>
+    
+</Application>

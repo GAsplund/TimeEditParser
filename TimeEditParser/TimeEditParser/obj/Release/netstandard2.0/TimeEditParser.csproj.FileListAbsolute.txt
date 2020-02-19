@@ -1,0 +1,39 @@
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\bin\Release\netstandard2.0\TimeEditParser.deps.json
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\bin\Release\netstandard2.0\TimeEditParser.dll
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\bin\Release\netstandard2.0\TimeEditParser.pdb
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\App.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\AboutPage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\ItemDetailPage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\MainPage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\NewItemPage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\SchedulePage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\SettingsPage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\WelcomePage.xaml.g.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.csproj.CoreCompileInputs.cache
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.AssemblyInfoInputs.cache
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.AssemblyInfo.cs
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.dll
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.pdb
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.csprojAssemblyReference.cache
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\XamlC.stamp
+H:\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\FiltersPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\bin\Release\netstandard2.0\TimeEditParser.deps.json
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\bin\Release\netstandard2.0\TimeEditParser.dll
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\bin\Release\netstandard2.0\TimeEditParser.pdb
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.csprojAssemblyReference.cache
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\App.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\AboutPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\FiltersPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\ItemDetailPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\MainPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\NewItemPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\SchedulePage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\SettingsPage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Views\WelcomePage.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.AssemblyInfoInputs.cache
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.AssemblyInfo.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\XamlC.stamp
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.dll
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\TimeEditParser.pdb
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Themes\DarkTheme.xaml.g.cs
+H:\Content Creation\Programming\Programming Projects\TimeEditParser\TimeEditParser\TimeEditParser\obj\Release\netstandard2.0\Themes\LightTheme.xaml.g.cs
