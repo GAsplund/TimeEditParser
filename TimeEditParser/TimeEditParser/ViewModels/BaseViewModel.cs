@@ -12,7 +12,7 @@ namespace TimeEditParser.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+        public IDataStore<BookingListItem> DataStore => DependencyService.Get<IDataStore<BookingListItem>>() ?? new MockDataStore();
 
         bool isBusy = false;
         public bool IsBusy

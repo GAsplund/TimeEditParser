@@ -14,7 +14,11 @@
     <ContentPage BackgroundColor="{DynamicResource PageBackgroundColor}">
         <ContentPage.Content BackgroundColor="{DynamicResource PageBackgroundColor}">
             <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
-                <Label Text="This Week" FontSize="Large" Margin="10" x:Name="TodayLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="This Week" FontSize="Large" Margin="10" x:Name="TodayLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+                    <Label Text="{Binding Week}" FontSize="Large" Margin="10" x:Name="TodayWeekLabel" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                
                 <BoxView HeightRequest="1" BackgroundColor="{DynamicResource ListViewSeparatorColor}" IsVisible="{Binding DayHasLessons}"/>
                 <ListView x:Name="TodayScheduleListView"
                 ItemsSource="{Binding Items}"
@@ -34,7 +38,10 @@
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Label Text="{Binding Heading}" BackgroundColor="{DynamicResource PageTitleColor}" TextColor="{DynamicResource PrimaryTextColor}"/>
+                                <StackLayout Orientation="Horizontal" Padding="0,2" BackgroundColor="{DynamicResource PageTitleColor}">
+                                    <Label Text="{Binding Heading}"  TextColor="{DynamicResource PrimaryTextColor}" FontSize="Medium" Padding="5,0"/>
+                                    <Label Text="{Binding Date}" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand" FontSize="Medium" Padding="5,0"/>
+                                </StackLayout>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.GroupHeaderTemplate>

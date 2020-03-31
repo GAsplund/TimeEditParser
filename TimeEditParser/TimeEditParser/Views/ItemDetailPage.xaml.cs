@@ -42,7 +42,7 @@ namespace TimeEditParser.Views
         {
             InitializeComponent();
 
-            var item = new Item
+            var item = new BookingListItem
             {
                 Text = "Item 1",
                 Description = "This is an item description."

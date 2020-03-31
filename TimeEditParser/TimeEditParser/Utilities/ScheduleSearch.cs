@@ -44,7 +44,7 @@ namespace TimeEditParser.Utilities
             {
                 linkbase += "/";
             }
-            return linkbase + "ri.html?sid=3&bl=b&objects=" + groupID;
+            return linkbase + "ri.html?sid=3&bl=b&ds=f&objects=" + groupID;
         }
     }
 }

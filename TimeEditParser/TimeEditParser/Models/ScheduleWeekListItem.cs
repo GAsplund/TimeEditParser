@@ -4,7 +4,8 @@ using System.Text;
 
 namespace TimeEditParser.Models
 {
-    public class Day : List<Booking>
+    class ScheduleWeekListItem : List<BookingListItemList>
     {
+        public string Week { get; set; }
     }
 }

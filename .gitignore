@@ -2,3 +2,7 @@
 TimeEditParser/TimeEditParser.iOS/bin
 TimeEditParser/TimeEditParser.Android/bin
 TimeEditParser/TimeEditParser.Android/obj
+TimeEditParser/TimeEditParser/bin
+TimeEditParser/TimeEditParser/obj
+TimeEditParser/TimeEditParser.Android/obj
+TimeEditParser/TimeEditParser.iOS/obj

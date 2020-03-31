@@ -2,7 +2,7 @@
 
 namespace TimeEditParser.Models
 {
-    public class Item
+    public class BookingListItem
     {
         public string Id { get; set; }
         public string Text { get; set; }

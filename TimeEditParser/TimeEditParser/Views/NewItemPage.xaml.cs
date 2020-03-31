@@ -10,13 +10,13 @@ namespace TimeEditParser.Views
 {
     public partial class NewItemPage : ContentPage
     {
-        public Item Item { get; set; }
+        public BookingListItem Item { get; set; }
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            Item = new Item
+            Item = new BookingListItem
             {
                 Text = "Item name",
                 Description = "This is an item description."

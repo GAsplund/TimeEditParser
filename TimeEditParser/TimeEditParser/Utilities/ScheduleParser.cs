@@ -16,42 +16,32 @@ namespace TimeEditParser
 
 
         // Gets the schedule, depending on day
-        public static dynamic GetSchedule()
+        public static List<Week> GetSchedule()
         {
             // Initiate variables
             dynamic doc;
             var web = new HtmlWeb();
-            try
-            {
-                // Get the web url asyncronously
-                doc =  Task.Run(() => web.Load(Utilities.ScheduleSearch.ScheduleLink(ApplicationSettings.GroupID, ApplicationSettings.LinkBase))).GetAwaiter().GetResult();
-                // Return the ParseSchedule function asyncronously
-                return Task.Run(() => ParseSchedule(doc)).GetAwaiter().GetResult();
-            }
-            catch(Exception e) // Return false if the setting does not exist, or if it fails to find the document nodes
-            { // Use variable e for breakpoint purposes
-                Console.WriteLine("An error occurred while parsing schedule: " + e.Message);
-                return false;
-            }
+            // Get the web url asyncronously
+            doc =  Task.Run(() => web.Load(Utilities.ScheduleSearch.ScheduleLink(ApplicationSettings.GroupID, ApplicationSettings.LinkBase))).GetAwaiter().GetResult();
+            // Return the ParseSchedule function asyncronously
+            return Task.Run(() => ParseSchedule(doc)).GetAwaiter().GetResult();
         }
 
         // Use the HtmlDocument to get the schedule data
-        public static dynamic ParseSchedule(dynamic doc)
+        public static List<Week> ParseSchedule(dynamic doc)
         {
-            try  // Get all HTML div nodes with the class "weekDiv"
-            { doc = doc.DocumentNode.SelectNodes(".//div[@class='weekDiv']"); }
-            catch(Exception e)
-            {
-                Console.WriteLine("An error has occurred:" + e.Message + "\n\nStacktrace:\n" + e.StackTrace);
-                return false;
-            }
+            // Get all HTML div nodes with the class "weekDiv"
+            doc = doc.DocumentNode.SelectNodes(".//div[@class='weekDay']");
 
             // Create a 2 dimensional list of dictionaries (1st is weekday, 2nd is lesson)
             List<Day> weekSchedule = new List<Day>();
 
             foreach (HtmlNode weekNode in doc)
             {
-                Day currentDaySchedule = new Day();
+                string dayDateString = weekNode.SelectSingleNode(".//div[contains(@class, 'headlinebottom2')]").InnerText.Replace("&nbsp;", " ").Trim().Substring(3);
+                DateTime dayDateTime = DateTime.Parse(dayDateString);
+
+                Day currentDaySchedule = new Day(dayDateTime);
                 // Check if the weekNode contains a bookingDiv, add empty currentDaySchedule if null and continue.
                 if(weekNode.SelectSingleNode(".//div[contains(@class, 'bookingDiv')]") == null)
                 {
@@ -122,10 +112,9 @@ namespace TimeEditParser
             //return SplitList(weekSchedule, 5);
         }
 
-        public static dynamic SetSchedule()
+        public static List<Week> SetSchedule()
         {
-            dynamic scheduleWeeks = GetSchedule();
-            if (scheduleWeeks is bool) return false;
+            List<Week> scheduleWeeks = GetSchedule();
             ListWeek = scheduleWeeks;
             return ListWeek;
         }

@@ -25,14 +25,14 @@ namespace TimeEditParser.Views
             BindingContext = viewModel = new ItemsViewModel();
         }
 
-        // Event processed when a lesson is selected
-        async void OnItemSelected(ListView sender, SelectedItemChangedEventArgs args)
+        // Event called when a lesson is selected
+        async void OnItemSelected(ListView sender, EventArgs e)
         {
             //Get the booking to pass to the ItemDetailPage
             //var index = (sender.ItemsSource as List<Item>).IndexOf(sender.SelectedItem as Item);
             ((ListView)sender).SelectedItem = null;
 
-            Item item = args.SelectedItem as Item;
+            BookingListItem item = (e as SelectedItemChangedEventArgs).SelectedItem as BookingListItem;
             if (item == null)
                 return;
 
@@ -78,30 +78,33 @@ namespace TimeEditParser.Views
             // Declare variables with fallbacks
             Week schedule = new Week();
             ListView TargetListView = TodayScheduleListView;
-            //bool isCurrentWeek = false;
+            List<Week> scheduleWeeks;
 
+            // Attempt to get the schedule for the whole week, and save it in the cache
+            try
+            {   
+                scheduleWeeks = await Task.Run(() => ScheduleParser.GetSchedule());
+            }
+            catch
+            {
+                Console.WriteLine("Failed to retreive and parse schedule.");
+                TodayScheduleListView.IsRefreshing = false;
+                TomorrowScheduleListView.IsRefreshing = false;
+                await DisplayAlert("Error", "Could not fetch schedule website properly. Have you set the link in settings?", "Ok");
+                return;
+            }
+
+            // Attempt to read data and display it
             try
             {
-                // Get the schedule for the whole week, and save it in the cache
-                dynamic scheduleWeeks = await Task.Run(() => ScheduleParser.GetSchedule());
-
                 Application.Current.Properties["scheduleWeeksCache"] = scheduleWeeks;
 
-                if (scheduleWeeks is bool) // Only bool if GetSchedule has returned false
-                {
-                    Console.WriteLine("Failed to retreive and parse schedule.");
-                    TodayScheduleListView.IsRefreshing = false;
-                    TomorrowScheduleListView.IsRefreshing = false;
-                    await DisplayAlert("Error", "Could not fetch schedule website properly. Have you set the link in settings?", "Ok");
-                    return;
-                }
                 foreach (int weekIndex in Enumerable.Range(1, scheduleWeeks.Count))
                 {
                     switch (weekIndex)
                     {
                         case 1:
                             schedule = scheduleWeeks[0];
-                            //isCurrentWeek = true;
                             SetScheduleWeek(schedule, TodayScheduleListView, true);
                             if (ScheduleParser.TodayIndex() - 1 <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
                             break;
@@ -110,11 +113,6 @@ namespace TimeEditParser.Views
                             SetScheduleWeek(schedule, TomorrowScheduleListView, false);
                             break;
                     }
-                    // Update the schedules for today and next day in the listViews
-                    //await SetSchedule(weekSchedule[ScheduleParser.TodayIndex() - 1], TodayScheduleListView, "This week");
-                    //TodayLabel.Text = "Today - " + weekSchedule[ScheduleParser.TodayIndex() - 1].Count + " lessons";
-                    //await SetSchedule(weekSchedule[ScheduleParser.TodayIndex()], TomorrowScheduleListView, "Next Week");
-                    //TomorrowLabel.Text = "Tomorrow - " + weekSchedule[ScheduleParser.TodayIndex()].Count + " lessons";
                 }
             }
             catch (Exception e)
@@ -124,7 +122,7 @@ namespace TimeEditParser.Views
                     Console.WriteLine(e.Message + "\n" + e.StackTrace);
                     TodayScheduleListView.IsRefreshing = false;
                     TomorrowScheduleListView.IsRefreshing = false;
-                    await DisplayAlert("Error", "Could not read schedule data. (" + e.Message + ")", "Ok");
+                    await DisplayAlert("Error", "Could not parse schedule data. (" + e.Message + ")", "Ok");
                 }
                 return;
             }
@@ -136,10 +134,14 @@ namespace TimeEditParser.Views
         private void SetScheduleWeek(Week ScheduleWeek, ListView TargetListView, bool isCurrentWeek)
         {
             // Create a list of each lesson
-            List<ItemList> ScheduleWeekItem = new List<ItemList>();
+            ScheduleWeekListItem ScheduleWeekItem = new ScheduleWeekListItem();
+
+            if (isCurrentWeek) ScheduleWeekItem.Week = (DateTime.Today.DayOfYear / 7).ToString();
+            else ScheduleWeekItem.Week = (DateTime.Today.AddDays(7).DayOfYear / 7).ToString();
+
             foreach (int i in Enumerable.Range(0, ScheduleWeek.Count))
             {
-                ItemList ScheduleDay = new ItemList();
+                BookingListItemList ScheduleDay = new BookingListItemList();
                 foreach (Booking lessson in ScheduleWeek[i])
                 {
                     ScheduleDay.Add(LessonToItem(lessson));
@@ -147,7 +149,7 @@ namespace TimeEditParser.Views
 
                 if (ScheduleWeek[i].Count == 0)
                 {
-                    ScheduleDay.Add(new Item { Text = "(No lessons for this day)", DayHasLessons = false });
+                    ScheduleDay.Add(new BookingListItem { Text = "(No lessons for this day)", DayHasLessons = false });
                 }
 
                 ScheduleWeekItem.Add(ScheduleDay);
@@ -167,14 +169,19 @@ namespace TimeEditParser.Views
                             ScheduleDay.Heading = "Tomorrow";
                             break;
                         default:
-                            ScheduleDay.Heading = DateTime.Today.AddDays(ScheduleWeek.Count - ScheduleParser.TodayIndex() + i).ToShortDateString();
+                            ScheduleDay.Heading = ScheduleWeek[i].Date.DayOfWeek.ToString();
                             break;
                     }
+                    ScheduleDay.Week = (ScheduleWeek[i].Date.DayOfYear / 7).ToString();
+                    ScheduleDay.Date = ScheduleWeek[i].Date.ToString("yyyy-MM-dd");
                 }
                 else
                 {
-                    ScheduleDay.Heading = DateTime.Today.AddDays(ScheduleWeek.Count - ScheduleParser.TodayIndex() + 7 + i).ToShortDateString();
+                    ScheduleDay.Week = (ScheduleWeek[i].Date.DayOfYear / 7).ToString();
+                    ScheduleDay.Heading = ScheduleWeek[i].Date.AddDays(7).DayOfWeek.ToString();
+                    ScheduleDay.Date = ScheduleWeek[i].Date.AddDays(7).ToString("yyyy-MM-dd");
                 }
+                
             }
 
 
@@ -185,9 +192,9 @@ namespace TimeEditParser.Views
         }
 
         // Format for the lessons
-        Item LessonToItem(Booking lesson)
+        BookingListItem LessonToItem(Booking lesson)
         {
-            return new Item()
+            return new BookingListItem()
             {
                 Text = lesson.Text,
                 Description = lesson.Description,

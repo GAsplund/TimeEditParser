@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace TimeEditParser.ViewModels
+namespace TimeEditParser.SettingCells
 {
-    internal class PickerCell : ViewCell
+    abstract class Setting : ViewCell
     {
         private Label _label { get; set; }
-
-        private View _picker { get; set; }
+        private View _element { get; set; }
 
         private Grid _base;
 
-        internal string Label
+
+        public string Label
         {
             get
             {
@@ -25,30 +25,36 @@ namespace TimeEditParser.ViewModels
             }
         }
 
-        internal View Picker
+        internal View Element
         {
             set
             {
                 //Remove picker if it exists
-                if (_picker != null)
+                if (_element != null)
                 {
-                    _base.Children.Remove(_picker);
+                    _base.Children.Remove(_element);
                 }
 
                 //Set its value
-                _picker = value;
+                _element = value;
                 //Add to layout
-                _base.Children.Add(_picker, 1, 0);
+                _base.Children.Add(_element, 1, 0);
 
+            }
+            get
+            {
+                return _element;
             }
         }
 
-        internal PickerCell()
+        internal Setting()
         {
             _label = new Label()
             {
                 VerticalOptions = LayoutOptions.Center
             };
+
+            _label.SetDynamicResource(Xamarin.Forms.Label.TextColorProperty, "PrimaryTextColor");
 
             _base = new Grid()
             {
@@ -61,6 +67,8 @@ namespace TimeEditParser.ViewModels
             };
 
             _base.Children.Add(_label, 0, 0);
+
+            
 
             this.View = _base;
         }

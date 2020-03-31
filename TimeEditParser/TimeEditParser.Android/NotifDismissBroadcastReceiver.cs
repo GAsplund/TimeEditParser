@@ -15,9 +15,11 @@ namespace TimeEditParser.Droid
     [BroadcastReceiver]
     class NotifDismissBroadcastReceiver : BroadcastReceiver
     {
+        // Day ended notification dismissed
         public override void OnReceive(Context context, Intent intent)
         {
-            ScheduleBroadcastReceiver.DayEndDismissed = true;
+            // Unregister schedule status BroadcastReceiver
+            Application.Context.UnregisterReceiver(ScheduleBroadcastReceiver.CurrentInstance);
         }
     }
 }

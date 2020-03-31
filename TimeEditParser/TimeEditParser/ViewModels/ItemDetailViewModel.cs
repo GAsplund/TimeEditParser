@@ -6,8 +6,8 @@ namespace TimeEditParser.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public BookingListItem Item { get; set; }
+        public ItemDetailViewModel(BookingListItem item = null)
         {
             Title = item?.Text;
             Item = item;

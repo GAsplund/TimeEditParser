@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TimeEditParser.Views.SettingsPage" Title="Settings"
-             xmlns:local="clr-namespace:TimeEditParser.ViewModels"
+             xmlns:local="clr-namespace:TimeEditParser.SettingCells"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <TableView Intent="Settings" BackgroundColor="{DynamicResource PageBackgroundColor}">
         <TableRoot>
 
                 <TableSection Title="TimeEdit" x:Name="TimeEditTableSection" TextColor="{DynamicResource PrimaryTextColor}">
-                    <EntryCell Label="Schedule Search Link" Placeholder="TimeEdit Link" x:Name="LinkSettingEntryCell" Completed="SaveLink"/>
+                    <local:TextSetting Label="Schedule Search Link" Placeholder="TimeEdit Link" x:Name="LinkSettingEntryCell" Completed="SaveLink"/>
+                    <local:PickerSetting Label="Test" x:Name="TestPickerCell"/>
+                    <local:TextSetting Label="Third test!"/>
                 </TableSection>
 
                 <TableSection Title="Lesson start notifications" TextColor="{DynamicResource PrimaryTextColor}">
-                    <SwitchCell Text="Enable" On="true" OnChanged="ToggleNotifAtStart" x:Name="ToggleNotifAtStartSwitchCell"/>
-                    <SwitchCell Text="Send before start" On="true" OnChanged="ToggleNotifBefore" x:Name="ToggleNotifBeforeSwitchCell"/>
-                    <EntryCell Label="Time before start" Completed="SaveTimeBefore" x:Name="SaveTimeBeforeEntryCell"/>
+                    <local:SwitchSetting Label="Enable" On="true" OnChanged="ToggleNotifAtStart" x:Name="ToggleNotifAtStartSwitchCell"/>
+                    <local:SwitchSetting Label="Send before start" On="true" OnChanged="ToggleNotifBefore" x:Name="ToggleNotifBeforeSwitchCell"/>
+                    <local:TextSetting Label="Time before start" Completed="SaveTimeBefore" x:Name="SaveTimeBeforeEntryCell"/>
                 </TableSection>
 
                 <TableSection Title="Lesson end notifications" TextColor="{DynamicResource PrimaryTextColor}">
-                    <SwitchCell Text="Enable" On="true" OnChanged="ToggleNotifAtEnd" x:Name="ToggleNotifAtEndSwitchCell"/>
-                    <SwitchCell Text="Send before end" On="true" OnChanged="ToggleNotifAfter" x:Name="ToggleNotifAfterSwitchCell"/>
-                    <EntryCell Label="Time before end"  Completed="SaveTimeAfter" x:Name="SaveTimeAfterEntryCell"/>
+                    <local:SwitchSetting Label="Enable" On="true" OnChanged="ToggleNotifAtEnd" x:Name="ToggleNotifAtEndSwitchCell"/>
+                    <local:SwitchSetting Label="Send before end" On="true" OnChanged="ToggleNotifAfter" x:Name="ToggleNotifAfterSwitchCell"/>
+                    <local:TextSetting Label="Time before end"  Completed="SaveTimeAfter" x:Name="SaveTimeAfterEntryCell"/>
                 </TableSection>
 
                 <TableSection Title="Appearance" TextColor="{DynamicResource PrimaryTextColor}">
-                    <SwitchCell Text="Use System Theme" On="false" OnChanged="ToggleForceSetTheme" x:Name="ForceSetThemeSwitchCell"/>
-                    <SwitchCell Text="Dark Theme" On="false" OnChanged="ToggleDarkTheme" x:Name="UseDarkThemeSwitchCell"/>
+                    <local:SwitchSetting Label="Use System Theme" On="false" OnChanged="ToggleForceSetTheme" x:Name="ForceSetThemeSwitchCell"/>
+                    <local:SwitchSetting Label="Dark Theme" On="false" OnChanged="ToggleDarkTheme" x:Name="UseDarkThemeSwitchCell"/>
                 </TableSection>
             
             </TableRoot>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TimeEditParser.SettingCells;
 using Xamarin.Forms;
 
 namespace TimeEditParser.Views
@@ -41,7 +42,7 @@ namespace TimeEditParser.Views
 
             // Attach event for index changed
             ScheduleGroupPicker.SelectedIndexChanged += UpdateScheduleGroup;
-            TimeEditTableSection.Add( new ViewModels.PickerCell() { Picker = ScheduleGroupPicker, Label = "Schedule group" });
+            TimeEditTableSection.Add( new SettingCells.PickerSetting() { Picker = ScheduleGroupPicker, Label = "Schedule group" });
 
             UseDarkThemeSwitchCell.On = ApplicationSettings.EnableDarkTheme;
             ForceSetThemeSwitchCell.On = ApplicationSettings.ForceSetTheme;
@@ -91,35 +92,35 @@ namespace TimeEditParser.Views
         // Event executed when "Send notifications before" is toggled
         void ToggleNotifBefore(object sender, EventArgs args)
         {
-            var cell = sender as SwitchCell;
-            ApplicationSettings.SendNotificationBefore = cell.On;
+            var cell = sender as Switch;
+            ApplicationSettings.SendNotificationBefore = cell.IsToggled;
         }
 
         // Event executed when "Send notifications after" is toggled
         void ToggleNotifAfter(object sender, EventArgs args)
         {
-            var cell = sender as SwitchCell;
-            ApplicationSettings.SendNotificationAfter = cell.On;
+            var cell = sender as Switch;
+            ApplicationSettings.SendNotificationAfter = cell.IsToggled;
         }
         // Event executed when "Send notifications at start" is toggled
         void ToggleNotifAtStart(object sender, EventArgs args)
         {
-            var cell = sender as SwitchCell;
-            ApplicationSettings.SendNotificationAtStart = cell.On;
+            var cell = sender as Switch;
+            ApplicationSettings.SendNotificationAtStart = cell.IsToggled;
         }
         // Event executed when "Send notifications at end" is toggled
         void ToggleNotifAtEnd(object sender, EventArgs args)
         {
-            var cell = sender as SwitchCell;
-            ApplicationSettings.SendNotificationAtEnd = cell.On;
+            var cell = sender as Switch;
+            ApplicationSettings.SendNotificationAtEnd = cell.IsToggled;
         }
 
         void ToggleDarkTheme(object sender, EventArgs args)
         {
             if (ForceSetThemeSwitchCell.On) return;
-            var cell = sender as SwitchCell;
-            ApplicationSettings.EnableDarkTheme = cell.On;
-            switch (cell.On)
+            var cell = sender as Switch;
+            ApplicationSettings.EnableDarkTheme = cell.IsToggled;
+            switch (cell.IsToggled)
             {
                 case true:
                     Utilities.Theming.SetTheme();
@@ -132,18 +133,17 @@ namespace TimeEditParser.Views
 
         void ToggleForceSetTheme(object sender, EventArgs args)
         {
-            var cell = sender as SwitchCell;
-            ApplicationSettings.ForceSetTheme = cell.On;
-            switch (cell.On)
+            var cell = sender as Switch;
+            ApplicationSettings.ForceSetTheme = cell.IsToggled;
+            switch (cell.IsToggled)
             {
                 case true:
                     Utilities.Theming.SetTheme();
                     break;
                 case false:
-                    ToggleDarkTheme(UseDarkThemeSwitchCell, EventArgs.Empty);
+                    ToggleDarkTheme(UseDarkThemeSwitchCell.Switch, EventArgs.Empty);
                     break;
             }
         }
-
     }
 }
