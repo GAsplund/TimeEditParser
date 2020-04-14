@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:nbc="clr-namespace:TimeEditParser.Utilities"
+             mc:Ignorable="d"
+             x:Class="TimeEditParser.Views.ScheduleWeekView">
+    <ContentView.Content>
+        <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <ListView x:Name="TodayScheduleListView"
+                ItemsSource="{Binding Items}"
+                x:FieldModifier="public"
+                VerticalOptions="FillAndExpand"
+                CachingStrategy="RecycleElement"
+                IsGroupingEnabled="true"
+                HasUnevenRows="True"
+                BackgroundColor="{DynamicResource PageBackgroundColor}"
+                SeparatorColor="{DynamicResource ListViewSeparatorColor}"
+                >
+
+                <!--ItemSelected="OnItemSelected"  Refreshing="UpdateSchedule"-->
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="0,2" BackgroundColor="{DynamicResource PageTitleColor}">
+                                <Label Text="{Binding Date}" FontSize="Large" Margin="10,7,10,10" x:Name="TodayWeekLabel" TextColor="{DynamicResource SecondaryTextColor}" IsVisible="{Binding IsWeekHeader}"/>
+                                <Label Text="{Binding Heading}"  TextColor="{DynamicResource PrimaryTextColor}" FontSize="Medium" Padding="5,0" IsVisible="{Binding IsWeekHeader, Converter={nbc:NegateBooleanConverter}}"/>
+                                <Label Text="{Binding Date}" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand" FontSize="Medium" Padding="5,0" IsVisible="{Binding IsWeekHeader, Converter={nbc:NegateBooleanConverter}}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="0,5">
+
+                                <StackLayout Padding="5,0">
+                                    <Label Text="{Binding StartTime}"
+                                                LineBreakMode="NoWrap"
+                                                TextColor="{DynamicResource PrimaryTextColor}"
+                                                FontSize="15" />
+                                    <Label Text="{Binding EndTime}"
+                                                LineBreakMode="NoWrap"
+                                                TextColor="{DynamicResource PrimaryTextColor}"
+                                                FontSize="15" />
+                                </StackLayout>
+
+                                <BoxView HeightRequest="5" WidthRequest="1" BackgroundColor="{DynamicResource ListViewSeparatorColor}" IsVisible="{Binding DayHasLessons}"/>
+
+                                <StackLayout Padding="5,0">
+                                    <Label Text="{Binding Text}"
+                                                LineBreakMode="NoWrap"
+                                                Style="{DynamicResource LargeLabelStyle}"/>
+                                    <Label Text="{Binding Description}"
+                                                LineBreakMode="NoWrap"
+                                                Style="{DynamicResource SmallLabelStyle}"/>
+                                </StackLayout>
+
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

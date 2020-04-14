@@ -15,7 +15,7 @@ using System.Globalization;
 
 namespace TimeEditParser.Views
 {
-    public partial class SchedulePage : CarouselPage
+    public partial class SchedulePage : ContentPage
     {
         ItemsViewModel viewModel;
 
@@ -42,7 +42,7 @@ namespace TimeEditParser.Views
             await Navigation.PushModalAsync(new NavigationPage(new ItemDetailPage(new ItemDetailViewModel(item))));
 
             // Manually deselect item
-            TodayScheduleListView.SelectedItem = null;
+            //TodayScheduleListView.SelectedItem = null;
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
@@ -77,7 +77,7 @@ namespace TimeEditParser.Views
         {
             // Declare variables with fallbacks
             Week schedule = new Week();
-            ListView TargetListView = TodayScheduleListView;
+            //ListView TargetListView = TodayScheduleListView;
             List<Week> scheduleWeeks;
 
             // Attempt to get the schedule for the whole week, and save it in the cache
@@ -88,11 +88,13 @@ namespace TimeEditParser.Views
             catch
             {
                 Console.WriteLine("Failed to retreive and parse schedule.");
-                TodayScheduleListView.IsRefreshing = false;
-                TomorrowScheduleListView.IsRefreshing = false;
+
+                Refresher.IsRefreshing = false;
                 await DisplayAlert("Error", "Could not fetch schedule website properly. Have you set the link in settings?", "Ok");
                 return;
             }
+
+            ScheduleWeekListItem ScheduleWeekItem = new ScheduleWeekListItem();
 
             // Attempt to read data and display it
             try
@@ -105,39 +107,41 @@ namespace TimeEditParser.Views
                     {
                         case 1:
                             schedule = scheduleWeeks[0];
-                            SetScheduleWeek(schedule, TodayScheduleListView, true);
+                            ScheduleWeekView scheduleWeek = new ScheduleWeekView();
+                            
+                            AddScheduleWeek(schedule, true, ScheduleWeekItem);
                             if (ScheduleParser.TodayIndex() - 1 <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
                             break;
                         case 2:
                             schedule = scheduleWeeks[1];
-                            SetScheduleWeek(schedule, TomorrowScheduleListView, false);
+                            AddScheduleWeek(schedule, false, ScheduleWeekItem);
                             break;
                     }
                 }
+                ScheduleWeekView TargetListView = new ScheduleWeekView();
+                ScheduleWeeksStackLayout.Children.Add(TargetListView);
+                TargetListView.TodayScheduleListView.ItemsSource = ScheduleWeekItem;
             }
             catch (Exception e)
             {
                 if (!(e is ArgumentOutOfRangeException))
                 {
                     Console.WriteLine(e.Message + "\n" + e.StackTrace);
-                    TodayScheduleListView.IsRefreshing = false;
-                    TomorrowScheduleListView.IsRefreshing = false;
-                    await DisplayAlert("Error", "Could not parse schedule data. (" + e.Message + ")", "Ok");
+                    Refresher.IsRefreshing = false;
+                    await DisplayAlert("Error", "Could not parse schedule data.\nMessage: " + e.Message, "Ok");
                 }
                 return;
             }
-
+            Refresher.IsRefreshing = false;
         }
 
 
         // Set the items for the target listView
-        private void SetScheduleWeek(Week ScheduleWeek, ListView TargetListView, bool isCurrentWeek)
+        private void AddScheduleWeek(Week ScheduleWeek, bool isCurrentWeek, ScheduleWeekListItem ScheduleWeekItem)
         {
             // Create a list of each lesson
-            ScheduleWeekListItem ScheduleWeekItem = new ScheduleWeekListItem();
-
-            if (isCurrentWeek) ScheduleWeekItem.Week = (DateTime.Today.DayOfYear / 7).ToString();
-            else ScheduleWeekItem.Week = (DateTime.Today.AddDays(7).DayOfYear / 7).ToString();
+            
+            ScheduleWeekItem.Add(new BookingListItemList { IsWeekHeader = true, Date = "Week " + (ScheduleWeek.First().Date.DayOfYear / 7).ToString()});
 
             foreach (int i in Enumerable.Range(0, ScheduleWeek.Count))
             {
@@ -152,6 +156,7 @@ namespace TimeEditParser.Views
                     ScheduleDay.Add(new BookingListItem { Text = "(No lessons for this day)", DayHasLessons = false });
                 }
 
+                ScheduleDay.IsWeekHeader = false;
                 ScheduleWeekItem.Add(ScheduleDay);
 
                 // Only set the day names relative to today if it's the current week.
@@ -172,22 +177,39 @@ namespace TimeEditParser.Views
                             ScheduleDay.Heading = ScheduleWeek[i].Date.DayOfWeek.ToString();
                             break;
                     }
-                    ScheduleDay.Week = (ScheduleWeek[i].Date.DayOfYear / 7).ToString();
                     ScheduleDay.Date = ScheduleWeek[i].Date.ToString("yyyy-MM-dd");
                 }
                 else
                 {
-                    ScheduleDay.Week = (ScheduleWeek[i].Date.DayOfYear / 7).ToString();
                     ScheduleDay.Heading = ScheduleWeek[i].Date.AddDays(7).DayOfWeek.ToString();
                     ScheduleDay.Date = ScheduleWeek[i].Date.AddDays(7).ToString("yyyy-MM-dd");
                 }
                 
             }
 
+            int totalDays = 0;
+            foreach (Day day in ScheduleWeek)
+            {
+                foreach(Booking booking in day)
+                {
 
-            TargetListView.ItemsSource = ScheduleWeekItem;
+                }
+            }
 
-            TargetListView.IsRefreshing = false;
+            //TargetListView.TodayScheduleListView.HasUnevenRows = false;
+            
+            //TargetListView.TodayScheduleListView.HasUnevenRows = true;
+            //TargetListView.TodayScheduleListView.HeightRequest = -1;
+            //TargetListView.HeightRequest = -1;
+            // TODO: Fix scroll alignment
+            //int items = 0;
+            //foreach (BookingListItemList item in ScheduleWeekItem) foreach (BookingListItem _ in item) items++;
+            //var adjust = Device.RuntimePlatform != Device.Android ? 1 : -items + 2;
+            //TargetListView.TodayScheduleListView.HeightRequest = (items * TargetListView.TodayScheduleListView.RowHeight) - adjust;
+            //object itemmss = TargetListView.TodayScheduleListView.ViewCells;
+
+
+            
             Console.WriteLine("Successfully got schedule");
         }
 
@@ -204,7 +226,6 @@ namespace TimeEditParser.Views
                 DayHasLessons = true
             };
         }
-
 
     }
 }

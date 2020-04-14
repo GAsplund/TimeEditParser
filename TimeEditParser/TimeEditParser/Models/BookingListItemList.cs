@@ -9,6 +9,7 @@ namespace TimeEditParser.Models
         public string Heading { get; set; }
         public string Date { get; set; }
         public string Week { get; set; }
+        public bool IsWeekHeader { get; set; }
         public List<BookingListItem> Items => this;
     }
 }

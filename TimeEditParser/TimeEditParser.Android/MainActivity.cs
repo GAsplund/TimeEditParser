@@ -36,10 +36,13 @@ namespace TimeEditParser.Droid
             // Register ScheduleBroadcastReceiver to fire every minute
             Android.Content.IntentFilter filter = new Android.Content.IntentFilter();
             filter.AddAction("android.intent.action.TIME_TICK");
-            RegisterReceiver(new ScheduleBroadcastReceiver(), filter);
-            UnregisterReceiver(new ScheduleBroadcastReceiver());
+            ScheduleBroadcastReceiver SchBroadcastRecv = new ScheduleBroadcastReceiver();
+            Application.Context.RegisterReceiver(SchBroadcastRecv, filter);
+            ScheduleBroadcastReceiver.CurrentInstance = SchBroadcastRecv;
+            //Android.Content.ContextWrapper.RegisterReceiver(SchBroadcastRecv, filter);
 
         }
+
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

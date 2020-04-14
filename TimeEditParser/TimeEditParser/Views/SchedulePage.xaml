@@ -1,154 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="TimeEditParser.Views.SchedulePage"
               Title="Schedule"
               x:Name="BrowseItemsPage"
               BackgroundColor="Black">
 
-    <CarouselPage.ToolbarItems>
+    <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filters" Clicked="LaunchFiltersPage" />
-    </CarouselPage.ToolbarItems>
-    
-    <!-- Schedule for today -->
-    <ContentPage BackgroundColor="{DynamicResource PageBackgroundColor}">
-        <ContentPage.Content BackgroundColor="{DynamicResource PageBackgroundColor}">
-            <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="This Week" FontSize="Large" Margin="10" x:Name="TodayLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
-                    <Label Text="{Binding Week}" FontSize="Large" Margin="10" x:Name="TodayWeekLabel" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand"/>
-                </StackLayout>
-                
-                <BoxView HeightRequest="1" BackgroundColor="{DynamicResource ListViewSeparatorColor}" IsVisible="{Binding DayHasLessons}"/>
-                <ListView x:Name="TodayScheduleListView"
-                ItemsSource="{Binding Items}"
-                VerticalOptions="StartAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding LoadItemsCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected"
-                Refreshing="UpdateSchedule"
-                IsGroupingEnabled="true"
-                BackgroundColor="{DynamicResource PageBackgroundColor}"
-                SeparatorColor="{DynamicResource ListViewSeparatorColor}"
-                >
-                    
-                    <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="0,2" BackgroundColor="{DynamicResource PageTitleColor}">
-                                    <Label Text="{Binding Heading}"  TextColor="{DynamicResource PrimaryTextColor}" FontSize="Medium" Padding="5,0"/>
-                                    <Label Text="{Binding Date}" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand" FontSize="Medium" Padding="5,0"/>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
+    </ContentPage.ToolbarItems>
+    <RefreshView x:Name="Refresher">
+        <ScrollView>
+            <StackLayout x:Name="ScheduleWeeksStackLayout">
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="0,5">
-
-                                    <StackLayout Padding="5,0">
-                                        <Label Text="{Binding StartTime}"
-                                                LineBreakMode="NoWrap"
-                                                TextColor="{DynamicResource PrimaryTextColor}"
-                                                FontSize="15" />
-                                        <Label Text="{Binding EndTime}"
-                                                LineBreakMode="NoWrap"
-                                                TextColor="{DynamicResource PrimaryTextColor}"
-                                                FontSize="15" />
-                                    </StackLayout>
-
-                                    <BoxView HeightRequest="5" WidthRequest="1" BackgroundColor="{DynamicResource ListViewSeparatorColor}" IsVisible="{Binding DayHasLessons}"/>
-
-                                    <StackLayout Padding="5,0">
-                                        <Label Text="{Binding Text}"
-                                                LineBreakMode="NoWrap"
-                                                Style="{DynamicResource LargeLabelStyle}"/>
-                                        <Label Text="{Binding Description}"
-                                                LineBreakMode="NoWrap"
-                                                Style="{DynamicResource SmallLabelStyle}"/>
-                                    </StackLayout>
-
-
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-
-                </ListView>
             </StackLayout>
-        </ContentPage.Content>
-    </ContentPage>
-    
-    <!-- Schedule for tomorrow -->
-    <ContentPage>
-        <ContentPage.Content BackgroundColor="{DynamicResource PageBackgroundColor}">
-            <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
-                <Label Text="Next Week" FontSize="Large" Margin="10" x:Name="TomorrowLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
-                <BoxView HeightRequest="1" BackgroundColor="{DynamicResource ListViewSeparatorColor}" IsVisible="{Binding DayHasLessons}"/>
-                <ListView x:Name="TomorrowScheduleListView"
-                ItemsSource="{Binding Items}"
-                VerticalOptions="StartAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding LoadItemsCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected"
-                Refreshing="UpdateSchedule"
-                IsGroupingEnabled="true"
-                BackgroundColor="{DynamicResource PageBackgroundColor}"
-                SeparatorColor="{DynamicResource ListViewSeparatorColor}"
-                >
-
-                    <ListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Label Text="{Binding Heading}" BackgroundColor="{DynamicResource PageTitleColor}" TextColor="{DynamicResource PrimaryTextColor}"/>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.GroupHeaderTemplate>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="0,5">
-
-                                    <StackLayout Padding="5,0">
-                                        <Label Text="{Binding StartTime}"
-                                                LineBreakMode="NoWrap"
-                                                TextColor="{DynamicResource PrimaryTextColor}"
-                                                FontSize="15" />
-                                        <Label Text="{Binding EndTime}"
-                                                LineBreakMode="NoWrap"
-                                                TextColor="{DynamicResource PrimaryTextColor}"
-                                                FontSize="15" />
-                                    </StackLayout>
-
-                                    <BoxView HeightRequest="5" WidthRequest="1" BackgroundColor="{DynamicResource ListViewSeparatorColor}" IsVisible="{Binding DayHasLessons}"/>
-
-                                    <StackLayout Padding="5,0">
-                                        <Label Text="{Binding Text}"
-                                                LineBreakMode="NoWrap"
-                                                Style="{DynamicResource LargeLabelStyle}"/>
-                                        <Label Text="{Binding Description}"
-                                                LineBreakMode="NoWrap"
-                                                Style="{DynamicResource SmallLabelStyle}"/>
-                                    </StackLayout>
+        </ScrollView>
+    </RefreshView>
 
 
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-
-                </ListView>
-            </StackLayout>
-        </ContentPage.Content>
-    </ContentPage>
-
-</CarouselPage>
+</ContentPage>
