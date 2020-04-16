@@ -11,6 +11,7 @@ using TimeEditParser.Utilities;
 using Android.Content;
 using TimeEditParser.Models;
 using System.Globalization;
+using Android.Media;
 
 [assembly: Xamarin.Forms.Dependency(
           typeof(TimeEditParser.Droid.NotificationDroid))]
@@ -20,7 +21,8 @@ namespace TimeEditParser.Droid
     {
         private NotificationCompat.Builder builder;
         private NotificationManager notificationManager;
-        private NotificationChannel channel;
+        private NotificationChannel importantChannel;
+        private NotificationChannel unimportantChannel;
 
         public bool notify = false;
 
@@ -36,14 +38,22 @@ namespace TimeEditParser.Droid
                 // support library). There is no need to create a notification
                 // channel on older versions of Android.
 
-                var channelName = "Schedule";
-                var channelDescription = "Notification for the schedule";
-                channel = new NotificationChannel("0", channelName, NotificationImportance.Default)
+                var importantChannelName = "Schedule notifications";
+                var importantChannelDescription = "Notification for the schedule";
+                importantChannel = new NotificationChannel("1", importantChannelName, NotificationImportance.Default)
                 {
-                    Description = channelDescription
+                    Description = importantChannelDescription
                 };
 
-                notificationManager.CreateNotificationChannel(channel);
+                var unimportantChannelName = "Ongoing schedule updates";
+                var unimportantChannelDescription = "Notification for the schedule";
+                unimportantChannel = new NotificationChannel("0", unimportantChannelName, NotificationImportance.Low)
+                {
+                    Description = unimportantChannelDescription
+                };
+
+                notificationManager.CreateNotificationChannel(unimportantChannel);
+                notificationManager.CreateNotificationChannel(importantChannel);
             }
         }
 
@@ -75,6 +85,7 @@ namespace TimeEditParser.Droid
 
             // Publish the notification:
             const int notificationId = 0;
+            updateNotificationSettings();
             notificationManager.Notify(notificationId, notification);
         }
 
@@ -119,9 +130,7 @@ namespace TimeEditParser.Droid
                     break;
             }
             builder.SetOngoing(true);
-            if (notify) builder.SetVibrate(new long[] { 0L });
-            else builder.SetVibrate(new long[] { 200L });
-
+            updateNotificationSettings();
             Android.App.Notification notification = builder.Build();
 
             // Publish the notification:
@@ -144,13 +153,28 @@ namespace TimeEditParser.Droid
                     break;
             }
             builder.SetOngoing(false);
-            if (notify) builder.SetVibrate(new long[] { 0L });
-            else builder.SetVibrate(new long[] { 200L });
+            updateNotificationSettings();
             Android.App.Notification notification = builder.Build();
 
             // Publish the notification:
             const int notificationId = 0;
             notificationManager.Notify(notificationId, notification);
+        }
+
+        private void updateNotificationSettings()
+        {
+            if (notify)
+            {
+                builder.SetChannelId("1");
+                builder.SetVibrate(new long[] { 200L });
+                builder.SetSound(Android.Provider.Settings.System.DefaultNotificationUri);
+            }
+            else
+            {
+                builder.SetChannelId("0");
+                builder.SetVibrate(new long[] { 0L });
+                builder.SetSound(null);
+            }
         }
 
     }

@@ -9,13 +9,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filters" Clicked="LaunchFiltersPage" />
     </ContentPage.ToolbarItems>
-    <RefreshView x:Name="Refresher">
-        <ScrollView>
-            <StackLayout x:Name="ScheduleWeeksStackLayout">
-
-            </StackLayout>
-        </ScrollView>
-    </RefreshView>
-
-
+    
+    <ContentView x:Name="ScheduleContentView"/>
+    
 </ContentPage>

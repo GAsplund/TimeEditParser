@@ -53,15 +53,27 @@ namespace TimeEditParser
 
         public static (ScheduledNotification, bool) GetUpcomingEvent()
         {
-            foreach (ScheduledNotification Event in scheduledEvents)
+            bool eventPassed = false;
+            foreach (ScheduledNotification Event in scheduledEvents.ToList())
             {
-                if (!ApplicationSettings.UseActiveNotification && (Event.Type == ScheduledNotification.NotificationType.AboutToEnd)) { Event.Time.AddMinutes(-ApplicationSettings.MinutesBeforeNotification); }
-                else if (!ApplicationSettings.UseActiveNotification && (Event.Type == ScheduledNotification.NotificationType.AboutToStart)) { Event.Time.AddMinutes(-ApplicationSettings.MinutesAfterNotification); }
-                if (DateTimePassed(Event.Time)) { LastEvent = Event; scheduledEvents.Remove(Event); return (Event, true); }
+                if (!ApplicationSettings.UseActiveNotification && (Event.Type == ScheduledNotification.NotificationType.AboutToEnd)) 
+                { 
+                    Event.Time.AddMinutes(-ApplicationSettings.MinutesBeforeNotification); 
+                }
+                else if (!ApplicationSettings.UseActiveNotification && (Event.Type == ScheduledNotification.NotificationType.AboutToStart)) 
+                { 
+                    Event.Time.AddMinutes(-ApplicationSettings.MinutesAfterNotification); 
+                }
+                if (DateTimePassed(Event.Time)) 
+                { 
+                    LastEvent = Event; scheduledEvents.Remove(Event);
+                    eventPassed = true;
+                }
                 else break;
             }
-
+            
             if (scheduledEvents.Count == 0) return (null, false);
+            else if (eventPassed) return (scheduledEvents.First(), eventPassed);
             //if (CheckBookingOngoing(scheduledEvents.First().Booking)) return scheduledEvents.First();
             else return (scheduledEvents.First(), false);
         }
@@ -134,6 +146,13 @@ namespace TimeEditParser
         static bool DateTimePassed(DateTime check)
         {
             return DateTime.Compare(check, DateTime.Now) < 0;
+        }
+
+        static List<ScheduledNotification> scheduledEventsReversed()
+        {
+            List<ScheduledNotification> reversedList = scheduledEvents;
+            reversedList.Reverse();
+            return reversedList;
         }
 
     }

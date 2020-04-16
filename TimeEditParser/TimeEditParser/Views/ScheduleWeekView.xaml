@@ -8,7 +8,7 @@
              x:Class="TimeEditParser.Views.ScheduleWeekView">
     <ContentView.Content>
         <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
-            <ListView x:Name="TodayScheduleListView"
+            <ListView x:Name="ScheduleListView"
                 ItemsSource="{Binding Items}"
                 x:FieldModifier="public"
                 VerticalOptions="FillAndExpand"
@@ -17,6 +17,7 @@
                 HasUnevenRows="True"
                 BackgroundColor="{DynamicResource PageBackgroundColor}"
                 SeparatorColor="{DynamicResource ListViewSeparatorColor}"
+                ItemSelected="OnItemSelected"
                 >
 
                 <!--ItemSelected="OnItemSelected"  Refreshing="UpdateSchedule"-->

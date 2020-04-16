@@ -12,37 +12,22 @@ using TimeEditParser.Views;
 using TimeEditParser.ViewModels;
 using Plugin.LocalNotifications;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace TimeEditParser.Views
 {
     public partial class SchedulePage : ContentPage
     {
         ItemsViewModel viewModel;
+        ScheduleWeekView scheduleList = new ScheduleWeekView();
 
         public SchedulePage()
         {
             InitializeComponent();
             BindingContext = viewModel = new ItemsViewModel();
-        }
-
-        // Event called when a lesson is selected
-        async void OnItemSelected(ListView sender, EventArgs e)
-        {
-            //Get the booking to pass to the ItemDetailPage
-            //var index = (sender.ItemsSource as List<Item>).IndexOf(sender.SelectedItem as Item);
-            ((ListView)sender).SelectedItem = null;
-
-            BookingListItem item = (e as SelectedItemChangedEventArgs).SelectedItem as BookingListItem;
-            if (item == null)
-                return;
-
-            if (item.Text == "(No lessons for this day)")
-                return;
-
-            await Navigation.PushModalAsync(new NavigationPage(new ItemDetailPage(new ItemDetailViewModel(item))));
-
-            // Manually deselect item
-            //TodayScheduleListView.SelectedItem = null;
+            scheduleList.ScheduleListView.Refreshing += UpdateSchedule;
+            scheduleList.ScheduleListView.IsPullToRefreshEnabled = true;
+            ScheduleContentView.Content = scheduleList;
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
@@ -89,7 +74,7 @@ namespace TimeEditParser.Views
             {
                 Console.WriteLine("Failed to retreive and parse schedule.");
 
-                Refresher.IsRefreshing = false;
+                scheduleList.ScheduleListView.IsRefreshing = false;
                 await DisplayAlert("Error", "Could not fetch schedule website properly. Have you set the link in settings?", "Ok");
                 return;
             }
@@ -107,32 +92,31 @@ namespace TimeEditParser.Views
                     {
                         case 1:
                             schedule = scheduleWeeks[0];
-                            ScheduleWeekView scheduleWeek = new ScheduleWeekView();
-                            
                             AddScheduleWeek(schedule, true, ScheduleWeekItem);
                             if (ScheduleParser.TodayIndex() - 1 <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
                             break;
-                        case 2:
-                            schedule = scheduleWeeks[1];
+                        default:
+                            schedule = scheduleWeeks[weekIndex - 1];
                             AddScheduleWeek(schedule, false, ScheduleWeekItem);
                             break;
                     }
                 }
-                ScheduleWeekView TargetListView = new ScheduleWeekView();
-                ScheduleWeeksStackLayout.Children.Add(TargetListView);
-                TargetListView.TodayScheduleListView.ItemsSource = ScheduleWeekItem;
+                
+                scheduleList.ScheduleListView.ItemsSource = ScheduleWeekItem;
             }
             catch (Exception e)
             {
                 if (!(e is ArgumentOutOfRangeException))
                 {
                     Console.WriteLine(e.Message + "\n" + e.StackTrace);
-                    Refresher.IsRefreshing = false;
+                    scheduleList.ScheduleListView.IsRefreshing = false;
                     await DisplayAlert("Error", "Could not parse schedule data.\nMessage: " + e.Message, "Ok");
                 }
                 return;
             }
-            Refresher.IsRefreshing = false;
+            scheduleList.ScheduleListView.IsRefreshing = false;
+            
+            Debug.WriteLine("Successfully got schedule");
         }
 
 
@@ -141,7 +125,8 @@ namespace TimeEditParser.Views
         {
             // Create a list of each lesson
             
-            ScheduleWeekItem.Add(new BookingListItemList { IsWeekHeader = true, Date = "Week " + (ScheduleWeek.First().Date.DayOfYear / 7).ToString()});
+            int week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(ScheduleWeek.First().Date, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            ScheduleWeekItem.Add(new BookingListItemList { IsWeekHeader = true, Date = "Week " + week});
 
             foreach (int i in Enumerable.Range(0, ScheduleWeek.Count))
             {
@@ -181,36 +166,11 @@ namespace TimeEditParser.Views
                 }
                 else
                 {
-                    ScheduleDay.Heading = ScheduleWeek[i].Date.AddDays(7).DayOfWeek.ToString();
-                    ScheduleDay.Date = ScheduleWeek[i].Date.AddDays(7).ToString("yyyy-MM-dd");
+                    ScheduleDay.Heading = ScheduleWeek[i].Date.DayOfWeek.ToString();
+                    ScheduleDay.Date = ScheduleWeek[i].Date.ToString("yyyy-MM-dd");
                 }
                 
             }
-
-            int totalDays = 0;
-            foreach (Day day in ScheduleWeek)
-            {
-                foreach(Booking booking in day)
-                {
-
-                }
-            }
-
-            //TargetListView.TodayScheduleListView.HasUnevenRows = false;
-            
-            //TargetListView.TodayScheduleListView.HasUnevenRows = true;
-            //TargetListView.TodayScheduleListView.HeightRequest = -1;
-            //TargetListView.HeightRequest = -1;
-            // TODO: Fix scroll alignment
-            //int items = 0;
-            //foreach (BookingListItemList item in ScheduleWeekItem) foreach (BookingListItem _ in item) items++;
-            //var adjust = Device.RuntimePlatform != Device.Android ? 1 : -items + 2;
-            //TargetListView.TodayScheduleListView.HeightRequest = (items * TargetListView.TodayScheduleListView.RowHeight) - adjust;
-            //object itemmss = TargetListView.TodayScheduleListView.ViewCells;
-
-
-            
-            Console.WriteLine("Successfully got schedule");
         }
 
         // Format for the lessons

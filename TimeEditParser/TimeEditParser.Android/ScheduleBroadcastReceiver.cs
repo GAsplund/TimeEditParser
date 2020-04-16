@@ -31,6 +31,7 @@ namespace TimeEditParser.Droid
             if (notification == null && Notification.DayEnded())
             {
                 // Day has ended
+                notif.notify = false;
                 // Send day ended notification, updating every minute
                 if (ApplicationSettings.UseActiveNotification) notif.SendDayEnded(Notification.DayLastLesson);
                 // Send day ended notification and unregister this BroadcastReceiver
