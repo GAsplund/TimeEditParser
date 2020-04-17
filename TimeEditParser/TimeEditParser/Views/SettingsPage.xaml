@@ -8,8 +8,6 @@
 
                 <TableSection Title="TimeEdit" x:Name="TimeEditTableSection" TextColor="{DynamicResource PrimaryTextColor}">
                     <local:TextSetting Label="Schedule Search Link" Placeholder="TimeEdit Link" x:Name="LinkSettingEntryCell" Completed="SaveLink"/>
-                    <local:PickerSetting Label="Test" x:Name="TestPickerCell"/>
-                    <local:TextSetting Label="Third test!"/>
                 </TableSection>
 
                 <TableSection Title="Lesson start notifications" TextColor="{DynamicResource PrimaryTextColor}">
@@ -25,8 +23,7 @@
                 </TableSection>
 
                 <TableSection Title="Appearance" TextColor="{DynamicResource PrimaryTextColor}">
-                    <local:SwitchSetting Label="Use System Theme" On="false" OnChanged="ToggleForceSetTheme" x:Name="ForceSetThemeSwitchCell"/>
-                    <local:SwitchSetting Label="Dark Theme" On="false" OnChanged="ToggleDarkTheme" x:Name="UseDarkThemeSwitchCell"/>
+                    <local:PickerSetting Label="Theme" x:Name="ThemeSelectorPickerSetting"/>
                 </TableSection>
             
             </TableRoot>

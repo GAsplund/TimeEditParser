@@ -57,17 +57,6 @@ namespace TimeEditParser.Droid
             }
         }
 
-        public void NotifyNotification(ScheduledNotification scheduledEvent, bool notify = false)
-        {
-
-            if (ApplicationSettings.UseActiveNotification) SendNotificationStatic(scheduledEvent);
-            else SendNotification(scheduledEvent);
-            //DateTime TimeAfterDelay = DateTime.Now.AddHours(10);
-            //if (DateTime.Compare(TimeEditParser.Notification.DayLastLesson.Time, TimeAfterDelay) > 0 && DateTime.Compare(TimeEditParser.Notification.DayLastLesson.Time, DateTime.Now) < 0) SendDayEnded(scheduledEvent);
-
-
-        }
-
         public void SendDayEnded(ScheduledNotification scheduledEvent)
         {
             DateTime time = scheduledEvent.Time;
@@ -85,7 +74,7 @@ namespace TimeEditParser.Droid
 
             // Publish the notification:
             const int notificationId = 0;
-            updateNotificationSettings();
+            UpdateNotificationSettings();
             notificationManager.Notify(notificationId, notification);
         }
 
@@ -101,36 +90,36 @@ namespace TimeEditParser.Droid
                     timeLeft = time - DateTime.Now;
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
-                    builder.SetContentTitle("Current lesson: No lesson")
-                           .SetContentText("Next up: " + lesson.name + " in " + timeLeftMinutes.ToString() + " minutes (" + lesson.StartTime + ") at " + lesson.Location + ".");
+                    builder.SetContentTitle("No ongoing lesson")
+                           .SetContentText("Next up: " + lesson.name + " in " + timeLeftMinutes.ToString() + "m (" + lesson.StartTime + ") at " + lesson.Location + ".");
                     break;
                 case ScheduledNotification.NotificationType.Start:
                     timeLeft = DateTime.ParseExact(lesson.EndTime, "HH:mm",
                           CultureInfo.InvariantCulture) - DateTime.Now;
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
-                    builder.SetContentTitle("Current lesson: " + lesson.name + " at " + lesson.Location)
-                           .SetContentText("Lesson ends in " + timeLeftMinutes.ToString() + " minutes (" + lesson.EndTime + ")");
+                    builder.SetContentTitle("Ongoing: " + lesson.name + " at " + lesson.Location)
+                           .SetContentText("Lesson ends in " + timeLeftMinutes.ToString() + "m (" + lesson.EndTime + ")");
                     break;
                 case ScheduledNotification.NotificationType.AboutToEnd:
                     timeLeft = DateTime.ParseExact(lesson.EndTime, "HH:mm",
                             CultureInfo.InvariantCulture) - DateTime.Now;
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
-                    builder.SetContentTitle("Current lesson: " + lesson.name + " at " + lesson.Location)
-                           .SetContentText("Lesson ends in " + timeLeftMinutes.ToString() + " minutes (" + lesson.EndTime + ")");
+                    builder.SetContentTitle("Ongoing: " + lesson.name + " at " + lesson.Location)
+                           .SetContentText("Lesson ends in " + timeLeftMinutes.ToString() + "m (" + lesson.EndTime + ")");
                     break;
                 case ScheduledNotification.NotificationType.End:
                     timeLeft = DateTime.ParseExact(lesson.StartTime, "HH:mm",
                                 CultureInfo.InvariantCulture) - DateTime.Now;
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
-                    builder.SetContentTitle("Current lesson: No lesson")
-                           .SetContentText("Next up: " + lesson.name + " in " + timeLeftMinutes.ToString() + " minutes (" + lesson.StartTime + ") at " + lesson.Location + ".");
+                    builder.SetContentTitle("No ongoing lesson")
+                           .SetContentText("Next up: " + lesson.name + " in " + timeLeftMinutes.ToString() + "m (" + lesson.StartTime + ") at " + lesson.Location + ".");
                     break;
             }
             builder.SetOngoing(true);
-            updateNotificationSettings();
+            UpdateNotificationSettings();
             Android.App.Notification notification = builder.Build();
 
             // Publish the notification:
@@ -153,7 +142,7 @@ namespace TimeEditParser.Droid
                     break;
             }
             builder.SetOngoing(false);
-            updateNotificationSettings();
+            UpdateNotificationSettings();
             Android.App.Notification notification = builder.Build();
 
             // Publish the notification:
@@ -161,7 +150,7 @@ namespace TimeEditParser.Droid
             notificationManager.Notify(notificationId, notification);
         }
 
-        private void updateNotificationSettings()
+        private void UpdateNotificationSettings()
         {
             if (notify)
             {

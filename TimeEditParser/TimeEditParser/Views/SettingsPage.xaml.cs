@@ -42,11 +42,21 @@ namespace TimeEditParser.Views
 
             // Attach event for index changed
             ScheduleGroupPicker.SelectedIndexChanged += UpdateScheduleGroup;
-            TimeEditTableSection.Add( new SettingCells.PickerSetting() { Picker = ScheduleGroupPicker, Label = "Schedule group" });
+            TimeEditTableSection.Add( new PickerSetting() { Picker = ScheduleGroupPicker, Label = "Schedule group" });
 
-            UseDarkThemeSwitchCell.On = ApplicationSettings.EnableDarkTheme;
-            ForceSetThemeSwitchCell.On = ApplicationSettings.ForceSetTheme;
+            Picker ThemePicker = ThemeSelectorPickerSetting.Picker as Picker;
 
+            ThemePicker.Items.Add("System");
+            ThemePicker.Items.Add("Light");
+            ThemePicker.Items.Add("Dark");
+
+            if (!ApplicationSettings.ForceSetTheme) ThemePicker.SelectedIndex = 0;
+            else if (!ApplicationSettings.EnableDarkTheme) ThemePicker.SelectedIndex = 1;
+            else ThemePicker.SelectedIndex = 2;
+
+            ThemePicker.SelectedIndexChanged += UpdateDarkThemeSetting;
+
+            ThemePicker.SetDynamicResource(Picker.TextColorProperty, "PrimaryTextColor");
             ScheduleGroupPicker.SetDynamicResource(Picker.TextColorProperty, "PrimaryTextColor");
         }
 
@@ -115,35 +125,24 @@ namespace TimeEditParser.Views
             ApplicationSettings.SendNotificationAtEnd = cell.IsToggled;
         }
 
-        void ToggleDarkTheme(object sender, EventArgs args)
+        void UpdateDarkThemeSetting(object sender, EventArgs args)
         {
-            if (ForceSetThemeSwitchCell.On) return;
-            var cell = sender as Switch;
-            ApplicationSettings.EnableDarkTheme = cell.IsToggled;
-            switch (cell.IsToggled)
+            Picker picker = sender as Picker;
+            switch (picker.SelectedIndex)
             {
-                case true:
-                    Utilities.Theming.SetTheme();
+                case 0:
+                    ApplicationSettings.ForceSetTheme = false;
                     break;
-                case false:
-                    Utilities.Theming.SetTheme();
+                case 1:
+                    ApplicationSettings.ForceSetTheme = true;
+                    ApplicationSettings.EnableDarkTheme = false;
+                    break;
+                case 2:
+                    ApplicationSettings.ForceSetTheme = true;
+                    ApplicationSettings.EnableDarkTheme = true;
                     break;
             }
-        }
-
-        void ToggleForceSetTheme(object sender, EventArgs args)
-        {
-            var cell = sender as Switch;
-            ApplicationSettings.ForceSetTheme = cell.IsToggled;
-            switch (cell.IsToggled)
-            {
-                case true:
-                    Utilities.Theming.SetTheme();
-                    break;
-                case false:
-                    ToggleDarkTheme(UseDarkThemeSwitchCell.Switch, EventArgs.Empty);
-                    break;
-            }
+            Utilities.Theming.SetTheme();
         }
     }
 }

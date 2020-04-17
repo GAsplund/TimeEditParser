@@ -72,7 +72,7 @@ namespace TimeEditParser
                 else break;
             }
             
-            if (scheduledEvents.Count == 0) return (null, false);
+            if (scheduledEvents.Count == 0) return (null, eventPassed);
             else if (eventPassed) return (scheduledEvents.First(), eventPassed);
             //if (CheckBookingOngoing(scheduledEvents.First().Booking)) return scheduledEvents.First();
             else return (scheduledEvents.First(), false);

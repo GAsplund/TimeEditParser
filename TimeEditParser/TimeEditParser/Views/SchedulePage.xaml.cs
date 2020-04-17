@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 using TimeEditParser.Models;
-using TimeEditParser.Views;
 using TimeEditParser.ViewModels;
-using Plugin.LocalNotifications;
 using System.Globalization;
 using System.Diagnostics;
 
@@ -62,7 +58,6 @@ namespace TimeEditParser.Views
         {
             // Declare variables with fallbacks
             Week schedule = new Week();
-            //ListView TargetListView = TodayScheduleListView;
             List<Week> scheduleWeeks;
 
             // Attempt to get the schedule for the whole week, and save it in the cache
@@ -75,7 +70,7 @@ namespace TimeEditParser.Views
                 Console.WriteLine("Failed to retreive and parse schedule.");
 
                 scheduleList.ScheduleListView.IsRefreshing = false;
-                await DisplayAlert("Error", "Could not fetch schedule website properly. Have you set the link in settings?", "Ok");
+                await DisplayAlert("Error", "Could not fetch schedule properly. Have you set the correct link in settings?", "Ok");
                 return;
             }
 
@@ -88,20 +83,17 @@ namespace TimeEditParser.Views
 
                 foreach (int weekIndex in Enumerable.Range(1, scheduleWeeks.Count))
                 {
-                    switch (weekIndex)
-                    {
-                        case 1:
-                            schedule = scheduleWeeks[0];
-                            AddScheduleWeek(schedule, true, ScheduleWeekItem);
-                            if (ScheduleParser.TodayIndex() - 1 <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
-                            break;
-                        default:
-                            schedule = scheduleWeeks[weekIndex - 1];
-                            AddScheduleWeek(schedule, false, ScheduleWeekItem);
-                            break;
+                    if (weekIndex == 1) {
+                        schedule = scheduleWeeks[0];
+                        AddScheduleWeek(schedule, true, ScheduleWeekItem);
+                        if (ScheduleParser.TodayIndex() - 1 <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
+                    }
+                    else {
+                        schedule = scheduleWeeks[weekIndex - 1];
+                        AddScheduleWeek(schedule, false, ScheduleWeekItem);
                     }
                 }
-                
+                // Set the ItemsSource of the ListView with the schedule items
                 scheduleList.ScheduleListView.ItemsSource = ScheduleWeekItem;
             }
             catch (Exception e)
@@ -114,9 +106,10 @@ namespace TimeEditParser.Views
                 }
                 return;
             }
+
+            // Finished updating schedule
             scheduleList.ScheduleListView.IsRefreshing = false;
-            
-            Debug.WriteLine("Successfully got schedule");
+            Debug.WriteLine("Schedule was successfully updated");
         }
 
 
@@ -149,13 +142,13 @@ namespace TimeEditParser.Views
                 {
                     switch (ScheduleWeekItem.Count - ScheduleParser.TodayIndex())
                     {
-                        case 0:
+                        case 1:
                             ScheduleDay.Heading = "Today";
                             break;
-                        case -1:
+                        case 0:
                             ScheduleDay.Heading = "Yesterday";
                             break;
-                        case 1:
+                        case 2:
                             ScheduleDay.Heading = "Tomorrow";
                             break;
                         default:

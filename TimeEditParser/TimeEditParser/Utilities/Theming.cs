@@ -30,7 +30,7 @@ namespace TimeEditParser.Utilities
 
                 Theme systemTheme;
 
-                if (ApplicationSettings.ForceSetTheme) systemTheme = DependencyService.Get<ISystemTheme>().GetSystemTheme();
+                if (!ApplicationSettings.ForceSetTheme) systemTheme = DependencyService.Get<ISystemTheme>().GetSystemTheme();
                 else
                 {
                     if (ApplicationSettings.EnableDarkTheme) systemTheme = Theme.Dark;
