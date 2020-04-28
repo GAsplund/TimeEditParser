@@ -34,6 +34,8 @@ namespace TimeEditParser.Droid
 
             if (!(Build.VERSION.SdkInt < BuildVersionCodes.O))
             {
+                // TODO: Prevent NullReferenceException with API < 26
+
                 // Notification channels are new in API 26 (and not a part of the
                 // support library). There is no need to create a notification
                 // channel on older versions of Android.

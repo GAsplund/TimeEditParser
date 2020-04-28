@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 using TimeEditParser.Models;
 using TimeEditParser.ViewModels;
@@ -12,6 +13,7 @@ using System.Diagnostics;
 
 namespace TimeEditParser.Views
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SchedulePage : ContentPage
     {
         ItemsViewModel viewModel;

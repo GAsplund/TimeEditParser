@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using TimeEditParser.SettingCells;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace TimeEditParser.Views
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage
     {
 
@@ -87,18 +89,6 @@ namespace TimeEditParser.Views
             Console.WriteLine("Successfully set link as "+LinkSettingEntryCell.Text);
         }
 
-        void SaveTimeBefore(object sender, EventArgs args)
-        {
-            var input = sender as EntryCell;
-            ApplicationSettings.MinutesBeforeNotification = Convert.ToInt32(input.Text);
-        }
-
-        void SaveTimeAfter(object sender, EventArgs args)
-        {
-            var input = sender as EntryCell;
-            ApplicationSettings.MinutesAfterNotification = Convert.ToInt32(input.Text);
-        }
-
         // Event executed when "Send notifications before" is toggled
         void ToggleNotifBefore(object sender, EventArgs args)
         {
@@ -125,7 +115,24 @@ namespace TimeEditParser.Views
             ApplicationSettings.SendNotificationAtEnd = cell.IsToggled;
         }
 
-        void UpdateDarkThemeSetting(object sender, EventArgs args)
+        void SaveTimeBefore(object sender, EventArgs args)
+        {
+            var input = sender as EntryCell;
+            ApplicationSettings.MinutesBeforeNotification = Convert.ToInt32(input.Text);
+        }
+
+        void SaveTimeAfter(object sender, EventArgs args)
+        {
+            var input = sender as EntryCell;
+            ApplicationSettings.MinutesAfterNotification = Convert.ToInt32(input.Text);
+        }
+
+        void OnGroupSelectionClicked(object sender, EventArgs args)
+        {
+            Navigation.PushModalAsync(new NavigationPage(new GroupSelector()));
+        }
+
+            void UpdateDarkThemeSetting(object sender, EventArgs args)
         {
             Picker picker = sender as Picker;
             switch (picker.SelectedIndex)
