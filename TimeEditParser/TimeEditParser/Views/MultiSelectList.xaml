@@ -4,12 +4,11 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             
-             x:Class="TimeEditParser.Views.GroupSelector">
+             x:Class="TimeEditParser.Views.MultiSelectList">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Filters" Clicked="Button_Clicked"/>
-            <ListView x:Name="GroupsList" x:FieldModifier="public">
+            <SearchBar Placeholder="Search items..."/>
+            <ListView x:Name="ItemsList" x:FieldModifier="public">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using TimeEditParser.Models;
 using System.Xml.Serialization;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using TimeEditParser.Utilities;
+using MessagePack;
+using System.Text;
 
 namespace TimeEditParser
 {
@@ -43,16 +47,6 @@ namespace TimeEditParser
             set => AppSettings.AddOrUpdateValue(nameof(LinkBase), value);
         }
 
-        public static string GroupID
-        {
-            get => AppSettings.GetValueOrDefault(nameof(GroupID), string.Empty);
-            set => AppSettings.AddOrUpdateValue(nameof(GroupID), value);
-        }
-        public static string GroupName
-        {
-            get => AppSettings.GetValueOrDefault(nameof(GroupName), string.Empty);
-            set => AppSettings.AddOrUpdateValue(nameof(GroupName), value);
-        }
         // Notifications to send before lesson start
         public static bool SendNotificationAtStart
         {
@@ -88,11 +82,24 @@ namespace TimeEditParser
             set => AppSettings.AddOrUpdateValue(nameof(MinutesAfterNotification), value);
         }
 
-
-        public static bool FirstTimeUse
+        public static Dictionary<string, string> LinkGroups
         {
-            get => AppSettings.GetValueOrDefault(nameof(FirstTimeUse), true);
-            set => AppSettings.AddOrUpdateValue(nameof(FirstTimeUse), value);
+            get
+            {
+                string serializedData = AppSettings.GetValueOrDefault(nameof(LinkGroups), "");
+                try
+                {
+                    return MessagePackSerializer.Deserialize <Dictionary<string,string>> (MessagePackSerializer.ConvertFromJson(serializedData));
+                } catch (Exception e)
+                {
+                    return new Dictionary<string, string>();
+                }
+            }
+
+            set
+            {
+                AppSettings.AddOrUpdateValue(nameof(LinkGroups), MessagePackSerializer.SerializeToJson(value));
+            }
         }
 
         //
@@ -139,7 +146,8 @@ namespace TimeEditParser
                     try
                     {
                         return (List<string>)deserializer.Deserialize(tr);
-                    } catch
+                    }
+                    catch
                     {
                         return new List<string>();
                     }
@@ -157,6 +165,11 @@ namespace TimeEditParser
             }
         }
 
+        public static bool FirstTimeUse
+        {
+            get => AppSettings.GetValueOrDefault(nameof(FirstTimeUse), true);
+            set => AppSettings.AddOrUpdateValue(nameof(FirstTimeUse), value);
+        }
 
         public static void ClearAllData()
         {

@@ -22,7 +22,7 @@ namespace TimeEditParser
             dynamic doc;
             var web = new HtmlWeb();
             // Get the web url asyncronously
-            doc =  Task.Run(() => web.Load(Utilities.ScheduleSearch.ScheduleLink(ApplicationSettings.GroupID, ApplicationSettings.LinkBase))).GetAwaiter().GetResult();
+            doc =  Task.Run(() => web.Load(Utilities.ScheduleSearch.ScheduleLink(ApplicationSettings.LinkBase))).GetAwaiter().GetResult();
             // Return the ParseSchedule function asyncronously
             return Task.Run(() => ParseSchedule(doc)).GetAwaiter().GetResult();
         }

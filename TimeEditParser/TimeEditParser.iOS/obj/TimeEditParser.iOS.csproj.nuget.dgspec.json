@@ -116,6 +116,10 @@
               "target": "Package",
               "version": "[1.0.5478, )"
             },
+            "MessagePack": {
+              "target": "Package",
+              "version": "[2.1.115, )"
+            },
             "Microsoft.CSharp": {
               "target": "Package",
               "version": "[4.7.0, )"

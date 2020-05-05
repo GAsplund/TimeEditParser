@@ -8,8 +8,15 @@
     <ContentPage.Content>
         <TableView BackgroundColor="{DynamicResource PageBackgroundColor}" x:Name="FiltersTableView">
             <TableRoot>
-
+                <TableSection>
+                    <ViewCell>
+                        <StackLayout>
+                            <Button Text="Search filter" Clicked="SearchFilter"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
             </TableRoot>
         </TableView>
+        
     </ContentPage.Content>
 </ContentPage>
