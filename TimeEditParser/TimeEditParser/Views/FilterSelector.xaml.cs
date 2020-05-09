@@ -17,50 +17,51 @@ namespace TimeEditParser.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FilterSelector : ContentPage
     {
-        public event EventHandler<EventArgs> enabledGroupsChanged;
+        public event EventHandler<EventArgs> EnabledGroupsChanged;
         Dictionary<string, FilterCategory> categories;
         Dictionary<string, Setting> currentSettings = new Dictionary<string, Setting>();
         Dictionary<string, string> searchResults;
         public Dictionary<string, string> enabledGroups;
-        Picker picker;
+        Picker filterTypePicker;
         string dataType = "0";
+
         public FilterSelector(Dictionary<string, FilterCategory> categories, Dictionary<string, string> enabledGroups)
         {
             InitializeComponent();
 
-            TableSection typeSelectionSection = new TableSection();
-            picker = new Picker();
-            picker.SelectedIndexChanged += pickerIndexChanged;
-            PickerSetting groupPickerSetting = new PickerSetting() { Picker = picker };
-            groupPickerSetting.Label = "Type";
-            typeSelectionSection.Add(groupPickerSetting);
-            FiltersTableView.Root.Add(typeSelectionSection);
+            ToolbarItems.Add(new ToolbarItem
+            {
+                Text = "Done",
+                Command = new Command(() => Navigation.PopModalAsync()),
+            });
+            filterTypePicker = new Picker();
+            filterTypePicker.SelectedIndexChanged += PickerIndexChanged;
+            filterTypePicker.SelectedIndexChanged += SearchFilter;
+            FilterTypePickerSetting.Picker = filterTypePicker;
 
-            FiltersTableView.Root.Add(new TableSection() { Title = "Filter Settings" });
-            FiltersTableView.Root.Add(new TableSection() { /*Title = "Filter Results"*/ });
-
-            ViewCell searchResultsCell = new ViewCell(); Button searchResultsButton = new Button { Text = "View results" };
-            searchResultsButton.Clicked += ShowFilteredItems;
-            searchResultsCell.View = searchResultsButton;
-            FiltersTableView.Root.Last().Add(searchResultsCell);
+            // <local:SubMenuSetting Label="View Results" Tapped="ShowFilteredItems"/>
+            SubMenuSetting searchResultsMenu = new SubMenuSetting(Navigation) { Label = "View Results" }; 
+            searchResultsMenu.Tapped += ShowFilteredItems;
+            SearchResultsSection.Add(searchResultsMenu);
 
             foreach (KeyValuePair<string, FilterCategory> category in categories) 
             {
-                picker.Items.Add(category.Key);
+                filterTypePicker.Items.Add(category.Key);
             }
             this.categories = categories;
             this.enabledGroups = enabledGroups;
         }
 
-        public void pickerIndexChanged(object sender, EventArgs args)
+        public async void PickerIndexChanged(object sender, EventArgs args)
         {
+            searchResults?.Clear();
             Picker picker = sender as Picker;
             string selectedCategory = picker.Items[picker.SelectedIndex];
             FilterCategory selectedFilterCategory = categories[selectedCategory];
             dataType = selectedFilterCategory.Value;
 
             if(FiltersTableView.Root.Count <= 1) { Log.Wtf("", "FiltersTableView has count of less than 2."); return; }
-            TableSection section = FiltersTableView.Root[2];
+            TableSection section = FiltersTableView.Root[1];
             section.Clear();
             currentSettings.Clear();
 
@@ -70,25 +71,30 @@ namespace TimeEditParser.Views
                     
                     foreach(KeyValuePair<string, List<FilterCategory>> valuePair in dd.Filters)
                     {
-                        Picker groupPicker = new Picker();
+                        List<CheckedListItem> items = new List<CheckedListItem>();
+                        MultiSelectSetting multiSelectSetting = new MultiSelectSetting(Navigation) { Label = valuePair.Key };
+                        MultiSelectList list = multiSelectSetting.SubMenu as MultiSelectList;
+
+                        list.OnCheckedChanged += SearchFilter;
                         foreach (FilterCategory category in valuePair.Value)
                         {
-                            groupPicker.Items.Add(category.Name);
+                            items.Add(new CheckedListItem { Title = category.Name, IsChecked = enabledGroups.Keys.Contains(category.Name) });
                         }
-                        PickerSetting groupPickerSetting = new PickerSetting() { Picker = groupPicker, Label = valuePair.Key };
+                        list.ItemsList.ItemsSource = items;
+                        //PickerSetting groupPickerSetting = new PickerSetting() { Picker = groupPicker, Label = valuePair.Key };
 
-                        section.Add(groupPickerSetting);
-                        currentSettings[valuePair.Key] = groupPickerSetting;
+                        section.Add(multiSelectSetting);
+                        currentSettings[valuePair.Key] = multiSelectSetting;
                     }
                     
                     break;
             }
         }
 
-        public void SearchFilter(object sender, EventArgs args)
+        async void SearchFilter(object sender, EventArgs args)
         {
-            if (picker.SelectedIndex < 0) return;
-            string selectedCategory = picker.Items[picker.SelectedIndex];
+            if (filterTypePicker.SelectedIndex < 0) return;
+            string selectedCategory = filterTypePicker.Items[filterTypePicker.SelectedIndex];
             //FilterCategory selectedFilter = categories[selectedCategory];
 
             Dictionary<string, Dictionary<string, List<string>>> items = new Dictionary<string, Dictionary<string, List<string>>>();
@@ -100,17 +106,20 @@ namespace TimeEditParser.Views
                 
                 switch (valuePair.Value)
                 {
-                    case PickerSetting ps:
-                        Picker picker = (Picker)ps.Picker;
-                        if (picker.SelectedIndex < 0) continue;
-                        List<FilterCategory> filters = ((FilterCategoryDropDown)categories[selectedCategory]).Filters[ps.Label];
-                        FilterCategory filter = filters[picker.SelectedIndex];
-                        //dataType = filter.DataType;
+                    case MultiSelectSetting ms:
+                        HashSet<string> selectedItems = ((MultiSelectList)ms.SubMenu).checkedItems;
+                        if (selectedItems.Count <= 0) continue;
+                        List<FilterCategory> filters = ((FilterCategoryDropDown)categories[selectedCategory]).Filters[ms.Label];
+                        foreach (FilterCategory filter in filters)
+                        {
+                            if (selectedItems.Contains(filter.Name))
+                            {
+                                if (!items.ContainsKey(filter.DataParam)) items.Add(filter.DataParam, new Dictionary<string, List<string>>());
+                                if (!items[filter.DataParam].ContainsKey(filter.DataPrefix)) items[filter.DataParam].Add(filter.DataPrefix, new List<string>());
 
-                        if (!items.ContainsKey(filter.DataParam)) items.Add(filter.DataParam, new Dictionary<string, List<string>>());
-                        if (!items[filter.DataParam].ContainsKey(filter.DataPrefix)) items[filter.DataParam].Add(filter.DataPrefix, new List<string>());
-
-                        items[filter.DataParam][filter.DataPrefix].Add(filter.Value);
+                                items[filter.DataParam][filter.DataPrefix].Add(filter.Value);
+                            }
+                        }
                         break;
                 }
             }
@@ -118,7 +127,7 @@ namespace TimeEditParser.Views
             searchResults = ScheduleSearch.SearchFilters(dataType, items);
         }
 
-        public void ShowFilteredItems(object sender, EventArgs args)
+        async void ShowFilteredItems(object sender, EventArgs args)
         {
             MultiSelectList filteredList = new MultiSelectList();
             filteredList.OnCheckedChanged += OnSelectedItemsChanged;
@@ -131,10 +140,10 @@ namespace TimeEditParser.Views
 
                 filteredList.ItemsList.ItemsSource = items;
             }
-            Navigation.PushModalAsync(new NavigationPage(filteredList));
+            await Navigation.PushModalAsync(new NavigationPage(filteredList) { Title = "Item Selection" });
         }
 
-        public void OnSelectedItemsChanged(object sender, EventArgs args)
+        async void OnSelectedItemsChanged(object sender, EventArgs args)
         {
             CheckedListItem item = sender as CheckedListItem;
             if(item.IsChecked)
@@ -142,7 +151,7 @@ namespace TimeEditParser.Views
                 enabledGroups.Add(item.Title, searchResults[item.Title]);
             }
             else if (enabledGroups.ContainsKey(item.Title)) enabledGroups.Remove(item.Title);
-            enabledGroupsChanged?.Invoke(this, null);
+            EnabledGroupsChanged?.Invoke(this, null);
         }
 
     }

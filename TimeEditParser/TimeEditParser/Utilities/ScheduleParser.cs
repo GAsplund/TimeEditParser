@@ -82,10 +82,10 @@ namespace TimeEditParser
                     // Create a formatted dictionary with the lesson information
                     Booking booking = new Booking
                     {
-                        classes =   cols[0].ToString(),
-                        name =      cols[1].ToString(),
+                        Classes =   cols[0].ToString(),
+                        Name =      cols[1].ToString(),
                         Location =  cols[3].ToString(),
-                        group =     cols[4].ToString(),
+                        Group =     cols[4].ToString(),
                         teachers =  teachers,
                         StartTime = startTime,
                         EndTime =   endTime,

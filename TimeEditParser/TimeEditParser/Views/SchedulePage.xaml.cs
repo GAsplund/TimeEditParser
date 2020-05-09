@@ -88,7 +88,7 @@ namespace TimeEditParser.Views
                     if (weekIndex == 1) {
                         schedule = scheduleWeeks[0];
                         AddScheduleWeek(schedule, true, ScheduleWeekItem);
-                        if (ScheduleParser.TodayIndex() - 1 <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
+                        if (ScheduleParser.TodayIndex() <= schedule.Count) Notification.SetNotificationsForDay(schedule[ScheduleParser.TodayIndex() - 1]);
                     }
                     else {
                         schedule = scheduleWeeks[weekIndex - 1];

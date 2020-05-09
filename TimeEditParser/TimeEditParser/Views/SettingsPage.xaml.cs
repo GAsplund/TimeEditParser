@@ -10,6 +10,8 @@ namespace TimeEditParser.Views
     public partial class SettingsPage : ContentPage
     {
 
+        GroupSelector selector = new GroupSelector(ApplicationSettings.LinkGroups);
+
         public SettingsPage()
         {
             InitializeComponent();
@@ -40,6 +42,12 @@ namespace TimeEditParser.Views
             ThemePicker.SelectedIndexChanged += UpdateDarkThemeSetting;
 
             ThemePicker.SetDynamicResource(Picker.TextColorProperty, "PrimaryTextColor");
+
+            SubMenuSetting GroupSelectionSetting = new SubMenuSetting(Navigation, selector) { Label = "Group Selection" };
+            //GroupSelectionSetting.Tapped += OnGroupSelectionClicked;
+            TimeEditTableSection.Add(GroupSelectionSetting);
+
+            selector.SelectedGroupsChanged += SaveSelectedGroups;
         }
 
         // Event executed when the timeedit link is set
@@ -51,6 +59,12 @@ namespace TimeEditParser.Views
             else { ApplicationSettings.LinkBase = LinkSettingEntryCell.Text; }
 
             Console.WriteLine("Successfully set link as "+LinkSettingEntryCell.Text);
+        }
+
+        // Event executed when schedule items are changed and must be saved.
+        void SaveSelectedGroups(object sender, EventArgs args)
+        {
+            ApplicationSettings.LinkGroups = selector.EnabledGroups;
         }
 
         // Event executed when "Send notifications before" is toggled
@@ -89,11 +103,6 @@ namespace TimeEditParser.Views
         {
             var input = sender as EntryCell;
             ApplicationSettings.MinutesAfterNotification = Convert.ToInt32(input.Text);
-        }
-
-        void OnGroupSelectionClicked(object sender, EventArgs args)
-        {
-            Navigation.PushModalAsync(new NavigationPage(new GroupSelector()));
         }
 
             void UpdateDarkThemeSetting(object sender, EventArgs args)

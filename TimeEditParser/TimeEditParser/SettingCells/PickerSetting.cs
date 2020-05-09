@@ -10,6 +10,7 @@ namespace TimeEditParser.SettingCells
         public PickerSetting()
         {
             Picker = new Picker();
+            Tapped += settingTapped;
         }
         internal View Picker
         {
@@ -21,6 +22,10 @@ namespace TimeEditParser.SettingCells
             {
                 return Element;
             }
+        }
+        private void settingTapped(object sender, EventArgs args)
+        {
+            if (!Picker.IsFocused) Picker.Focus();
         }
     }
 }

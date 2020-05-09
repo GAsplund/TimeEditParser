@@ -8,9 +8,6 @@
 
                 <TableSection Title="TimeEdit" x:Name="TimeEditTableSection" TextColor="{DynamicResource PrimaryTextColor}">
                     <local:TextSetting Label="Schedule Search Link" Placeholder="TimeEdit Link" x:Name="LinkSettingEntryCell" Completed="SaveLink"/>
-                    <ViewCell>
-                        <Button Text="Group Selection" Clicked="OnGroupSelectionClicked"/>
-                    </ViewCell>
                 </TableSection>
 
                 <TableSection Title="Lesson start notifications" TextColor="{DynamicResource PrimaryTextColor}">

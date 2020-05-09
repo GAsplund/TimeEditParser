@@ -93,14 +93,14 @@ namespace TimeEditParser.Droid
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
                     builder.SetContentTitle("No ongoing lesson")
-                           .SetContentText("Next up: " + lesson.name + " in " + timeLeftMinutes.ToString() + "m (" + lesson.StartTime + ") at " + lesson.Location + ".");
+                           .SetContentText("Next up: " + lesson.Name + " in " + timeLeftMinutes.ToString() + "m (" + lesson.StartTime + ") at " + lesson.Location + ".");
                     break;
                 case ScheduledNotification.NotificationType.Start:
                     timeLeft = DateTime.ParseExact(lesson.EndTime, "HH:mm",
                           CultureInfo.InvariantCulture) - DateTime.Now;
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
-                    builder.SetContentTitle("Ongoing: " + lesson.name + " at " + lesson.Location)
+                    builder.SetContentTitle("Ongoing: " + lesson.Name + " at " + lesson.Location)
                            .SetContentText("Lesson ends in " + timeLeftMinutes.ToString() + "m (" + lesson.EndTime + ")");
                     break;
                 case ScheduledNotification.NotificationType.AboutToEnd:
@@ -108,7 +108,7 @@ namespace TimeEditParser.Droid
                             CultureInfo.InvariantCulture) - DateTime.Now;
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
-                    builder.SetContentTitle("Ongoing: " + lesson.name + " at " + lesson.Location)
+                    builder.SetContentTitle("Ongoing: " + lesson.Name + " at " + lesson.Location)
                            .SetContentText("Lesson ends in " + timeLeftMinutes.ToString() + "m (" + lesson.EndTime + ")");
                     break;
                 case ScheduledNotification.NotificationType.End:
@@ -117,7 +117,7 @@ namespace TimeEditParser.Droid
                     timeLeftMinutes = Math.Floor(timeLeft.TotalMinutes) + 1;
 
                     builder.SetContentTitle("No ongoing lesson")
-                           .SetContentText("Next up: " + lesson.name + " in " + timeLeftMinutes.ToString() + "m (" + lesson.StartTime + ") at " + lesson.Location + ".");
+                           .SetContentText("Next up: " + lesson.Name + " in " + timeLeftMinutes.ToString() + "m (" + lesson.StartTime + ") at " + lesson.Location + ".");
                     break;
             }
             builder.SetOngoing(true);

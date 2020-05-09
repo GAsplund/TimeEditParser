@@ -78,20 +78,6 @@ namespace TimeEditParser
             else return (scheduledEvents.First(), false);
         }
 
-        static bool CheckBookingOngoing(Booking booking)
-        {
-            TimeSpan start = TimeSpan.ParseExact(booking.StartTime, "HH:mm",
-                              CultureInfo.InvariantCulture);
-            TimeSpan end = TimeSpan.ParseExact(booking.EndTime, "HH:mm",
-                              CultureInfo.InvariantCulture);
-            TimeSpan now = DateTime.Now.TimeOfDay;
-            // see if start comes before end
-            if (start < end)
-                return start <= now && now <= end;
-            // start is after end, so do the inverse comparison
-            return !(end < now && now < start);
-        }
-
         public static void SetNotificationsForDay(Day day)
         {
             // Only schedule notifications if it wasn't checked earlier today
@@ -146,13 +132,6 @@ namespace TimeEditParser
         static bool DateTimePassed(DateTime check)
         {
             return DateTime.Compare(check, DateTime.Now) < 0;
-        }
-
-        static List<ScheduledNotification> scheduledEventsReversed()
-        {
-            List<ScheduledNotification> reversedList = scheduledEvents;
-            reversedList.Reverse();
-            return reversedList;
         }
 
     }

@@ -8,7 +8,7 @@
              x:Class="TimeEditParser.Views.GroupSelector">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Filters" Clicked="Button_Clicked"/>
+            <Button Text="Filters" Clicked="SelectFilters"/>
             <ListView x:Name="GroupsList" x:FieldModifier="public">
                 <ListView.ItemTemplate>
                     <DataTemplate>

@@ -3,17 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:TimeEditParser.SettingCells"
              mc:Ignorable="d"
              x:Class="TimeEditParser.Views.FilterSelector">
     <ContentPage.Content>
         <TableView BackgroundColor="{DynamicResource PageBackgroundColor}" x:Name="FiltersTableView">
             <TableRoot>
-                <TableSection>
-                    <ViewCell>
-                        <StackLayout>
-                            <Button Text="Search filter" Clicked="SearchFilter"/>
-                        </StackLayout>
-                    </ViewCell>
+                <TableSection Title="Filter Type">
+                    <local:PickerSetting Label="Type" x:Name="FilterTypePickerSetting"/>
+                </TableSection>
+                <TableSection Title="Filter Settings"/>
+                <TableSection Title="Search Results" x:Name="SearchResultsSection">
+                    
                 </TableSection>
             </TableRoot>
         </TableView>

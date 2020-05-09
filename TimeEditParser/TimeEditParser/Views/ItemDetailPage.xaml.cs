@@ -32,7 +32,7 @@ namespace TimeEditParser.Views
         async void RemoveLessonName(object sender, EventArgs args)
         {
             List<string> LessonNameRemoveFilter = ApplicationSettings.FilterNames;
-            LessonNameRemoveFilter.Add(viewModel.Item.Booking.name);
+            LessonNameRemoveFilter.Add(viewModel.Item.Booking.Name);
             ApplicationSettings.FilterNames = LessonNameRemoveFilter;
             await App.Current.SavePropertiesAsync();
             await App.Current.MainPage.Navigation.PopModalAsync();
