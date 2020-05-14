@@ -5,17 +5,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:TimeEditParser.SettingCells"
              mc:Ignorable="d"
-             x:Class="TimeEditParser.Views.FilterSelector">
+             x:Class="TimeEditParser.Views.FilterSelector"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <TableView BackgroundColor="{DynamicResource PageBackgroundColor}" x:Name="FiltersTableView">
             <TableRoot>
-                <TableSection Title="Filter Type">
+                <TableSection Title="Filter Type" TextColor="{DynamicResource PrimaryTextColor}">
                     <local:PickerSetting Label="Type" x:Name="FilterTypePickerSetting"/>
                 </TableSection>
-                <TableSection Title="Filter Settings"/>
-                <TableSection Title="Search Results" x:Name="SearchResultsSection">
-                    
-                </TableSection>
+                <TableSection Title="Filter Settings" TextColor="{DynamicResource PrimaryTextColor}"/>
+                <TableSection Title="Search Results" x:Name="SearchResultsSection" TextColor="{DynamicResource PrimaryTextColor}"/>
             </TableRoot>
         </TableView>
         

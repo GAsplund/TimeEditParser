@@ -7,13 +7,13 @@
 
     <StackLayout Spacing="20" Padding="15" BackgroundColor="{DynamicResource PageBackgroundColor}">
         <Label Text="Location:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
-        <Label Text="{Binding Item.Booking.location}" FontSize="Small" x:Name="LocationLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.Location}" FontSize="Small" x:Name="LocationLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
         <Label Text="Starts at:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
-        <Label Text="{Binding Item.Booking.startTime}" FontSize="Small" x:Name="StartTimeLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.StartTime}" FontSize="Small" x:Name="StartTimeLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
         <Label Text="Ends at:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
-        <Label Text="{Binding Item.Booking.endTime}" FontSize="Small" x:Name="EndTimeLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.EndTime}" FontSize="Small" x:Name="EndTimeLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
         <Label Text="ID:" FontSize="Medium" TextColor="{DynamicResource PrimaryTextColor}"/>
-        <Label Text="{Binding Item.Booking.id}" FontSize="Small" x:Name="IdNumLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
+        <Label Text="{Binding Item.Booking.Id}" FontSize="Small" x:Name="IdNumLabel" TextColor="{DynamicResource PrimaryTextColor}"/>
         <Button Text="Remove only this lesson" Clicked="RemoveLesson" TextColor="{DynamicResource PrimaryTextColor}" BackgroundColor="{DynamicResource NavigationBarColor}"/>
         <Button Text="Remove all lessons of this type" Clicked="RemoveLessonName" TextColor="{DynamicResource PrimaryTextColor}" BackgroundColor="{DynamicResource NavigationBarColor}"/>
     </StackLayout>

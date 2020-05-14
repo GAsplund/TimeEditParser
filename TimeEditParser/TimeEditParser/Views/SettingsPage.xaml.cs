@@ -29,12 +29,14 @@ namespace TimeEditParser.Views
             ToggleNotifAtEndSwitchCell.On = ApplicationSettings.SendNotificationAtEnd; // At end
             SaveTimeAfterEntryCell.Text = ApplicationSettings.MinutesAfterNotification.ToString(); // Time before end
 
+            // Create picker for selecting theme and populate its selections
             Picker ThemePicker = ThemeSelectorPickerSetting.Picker as Picker;
 
             ThemePicker.Items.Add("System");
             ThemePicker.Items.Add("Light");
             ThemePicker.Items.Add("Dark");
 
+            // Set picker selected index depending on previously selected setting
             if (!ApplicationSettings.ForceSetTheme) ThemePicker.SelectedIndex = 0;
             else if (!ApplicationSettings.EnableDarkTheme) ThemePicker.SelectedIndex = 1;
             else ThemePicker.SelectedIndex = 2;
@@ -44,7 +46,6 @@ namespace TimeEditParser.Views
             ThemePicker.SetDynamicResource(Picker.TextColorProperty, "PrimaryTextColor");
 
             SubMenuSetting GroupSelectionSetting = new SubMenuSetting(Navigation, selector) { Label = "Group Selection" };
-            //GroupSelectionSetting.Tapped += OnGroupSelectionClicked;
             TimeEditTableSection.Add(GroupSelectionSetting);
 
             selector.SelectedGroupsChanged += SaveSelectedGroups;

@@ -4,18 +4,19 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             
-             x:Class="TimeEditParser.Views.GroupSelector">
+             x:Class="TimeEditParser.Views.GroupSelector"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
             <Button Text="Filters" Clicked="SelectFilters"/>
-            <ListView x:Name="GroupsList" x:FieldModifier="public">
+            <Label Text="Current schedule items:"/>
+            <ListView x:Name="GroupsList" x:FieldModifier="public" BackgroundColor="{DynamicResource PageBackgroundColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding Title}" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
-                                <CheckBox IsChecked="{Binding IsChecked}" HorizontalOptions="EndAndExpand"/>
+                            <StackLayout Orientation="Horizontal" BackgroundColor="{DynamicResource PageBackgroundColor}">
+                                <Label Text="{Binding Title}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" TextColor="{DynamicResource PrimaryTextColor}"/>
+                                <CheckBox IsChecked="{Binding IsChecked}" HorizontalOptions="EndAndExpand" BackgroundColor="{DynamicResource PageBackgroundColor}"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

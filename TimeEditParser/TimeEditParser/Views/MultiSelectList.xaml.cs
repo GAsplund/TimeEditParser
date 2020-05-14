@@ -28,13 +28,14 @@ namespace TimeEditParser.Views
 
         public void OnItemSelected(object sender, EventArgs args)
         {
+            // TODO: Lessen amount of casts needed
             if ((CheckedListItem)ItemsList.SelectedItem == null) return;
             ((CheckedListItem)ItemsList.SelectedItem).IsChecked = !((CheckedListItem)ItemsList.SelectedItem).IsChecked;
             if (((CheckedListItem)ItemsList.SelectedItem).IsChecked) checkedItems.Add(((CheckedListItem)ItemsList.SelectedItem).Title);
             else checkedItems.Remove(((CheckedListItem)ItemsList.SelectedItem).Title);
             
 
-            OnCheckedChanged?.Invoke((CheckedListItem)ItemsList.SelectedItem/*this*/, null);
+            OnCheckedChanged?.Invoke((CheckedListItem)ItemsList.SelectedItem, EventArgs.Empty);
 
             ItemsList.SelectedItem = null;
         }

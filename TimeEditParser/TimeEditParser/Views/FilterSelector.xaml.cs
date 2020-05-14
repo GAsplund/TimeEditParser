@@ -18,12 +18,12 @@ namespace TimeEditParser.Views
     public partial class FilterSelector : ContentPage
     {
         public event EventHandler<EventArgs> EnabledGroupsChanged;
-        Dictionary<string, FilterCategory> categories;
-        Dictionary<string, Setting> currentSettings = new Dictionary<string, Setting>();
-        Dictionary<string, string> searchResults;
-        public Dictionary<string, string> enabledGroups;
-        Picker filterTypePicker;
-        string dataType = "0";
+        private Dictionary<string, FilterCategory> categories;
+        private Dictionary<string, Setting> currentSettings = new Dictionary<string, Setting>();
+        private Dictionary<string, string> searchResults;
+        public Dictionary<string, string> EnabledGroups;
+        private Picker filterTypePicker;
+        private string dataType = "0";
 
         public FilterSelector(Dictionary<string, FilterCategory> categories, Dictionary<string, string> enabledGroups)
         {
@@ -49,27 +49,30 @@ namespace TimeEditParser.Views
                 filterTypePicker.Items.Add(category.Key);
             }
             this.categories = categories;
-            this.enabledGroups = enabledGroups;
+            this.EnabledGroups = enabledGroups;
         }
 
+        // Function is async to run on another thread. Won't actually block GUI.
         public async void PickerIndexChanged(object sender, EventArgs args)
         {
+            // Clear search results and 
             searchResults?.Clear();
             Picker picker = sender as Picker;
             string selectedCategory = picker.Items[picker.SelectedIndex];
             FilterCategory selectedFilterCategory = categories[selectedCategory];
             dataType = selectedFilterCategory.Value;
 
-            if(FiltersTableView.Root.Count <= 1) { Log.Wtf("", "FiltersTableView has count of less than 2."); return; }
+            if (FiltersTableView.Root.Count <= 1) { Log.Wtf("", "FiltersTableView has count of less than 2."); return; }
             TableSection section = FiltersTableView.Root[1];
             section.Clear();
             currentSettings.Clear();
 
+            // Add different filters depending on category
             switch (selectedFilterCategory)
             {
-                case FilterCategoryDropDown dd:
-                    
-                    foreach(KeyValuePair<string, List<FilterCategory>> valuePair in dd.Filters)
+                case SearchFilterMultiChoice smfc:
+
+                    foreach (KeyValuePair<string, List<FilterCategory>> valuePair in smfc.Filters)
                     {
                         List<CheckedListItem> items = new List<CheckedListItem>();
                         MultiSelectSetting multiSelectSetting = new MultiSelectSetting(Navigation) { Label = valuePair.Key };
@@ -78,7 +81,7 @@ namespace TimeEditParser.Views
                         list.OnCheckedChanged += SearchFilter;
                         foreach (FilterCategory category in valuePair.Value)
                         {
-                            items.Add(new CheckedListItem { Title = category.Name, IsChecked = enabledGroups.Keys.Contains(category.Name) });
+                            items.Add(new CheckedListItem { Title = category.Name, IsChecked = EnabledGroups.Keys.Contains(category.Name) });
                         }
                         list.ItemsList.ItemsSource = items;
                         //PickerSetting groupPickerSetting = new PickerSetting() { Picker = groupPicker, Label = valuePair.Key };
@@ -86,72 +89,74 @@ namespace TimeEditParser.Views
                         section.Add(multiSelectSetting);
                         currentSettings[valuePair.Key] = multiSelectSetting;
                     }
-                    
+
                     break;
             }
         }
 
+        // Function is async to run on another thread. Won't actually block GUI.
         async void SearchFilter(object sender, EventArgs args)
         {
-            if (filterTypePicker.SelectedIndex < 0) return;
-            string selectedCategory = filterTypePicker.Items[filterTypePicker.SelectedIndex];
-            //FilterCategory selectedFilter = categories[selectedCategory];
+            // Run the function asynchronously to prevent GUI blocking
+                if (filterTypePicker.SelectedIndex < 0) return;
 
-            Dictionary<string, Dictionary<string, List<string>>> items = new Dictionary<string, Dictionary<string, List<string>>>();
+                string selectedCategory = filterTypePicker.Items[filterTypePicker.SelectedIndex];
+                // Dictionary<string: , Dictionary<string: , List<string: >>>
+                Dictionary<string, Dictionary<string, List<string>>> items = new Dictionary<string, Dictionary<string, List<string>>>();
 
-            //string dataPrefix;
-
-            foreach(KeyValuePair<string, Setting> valuePair in currentSettings)
-            {
-                
-                switch (valuePair.Value)
+                foreach (KeyValuePair<string, Setting> valuePair in currentSettings)
                 {
-                    case MultiSelectSetting ms:
-                        HashSet<string> selectedItems = ((MultiSelectList)ms.SubMenu).checkedItems;
-                        if (selectedItems.Count <= 0) continue;
-                        List<FilterCategory> filters = ((FilterCategoryDropDown)categories[selectedCategory]).Filters[ms.Label];
-                        foreach (FilterCategory filter in filters)
-                        {
-                            if (selectedItems.Contains(filter.Name))
+
+                    switch (valuePair.Value)
+                    {
+                        case MultiSelectSetting ms:
+                            HashSet<string> selectedItems = ((MultiSelectList)ms.SubMenu).checkedItems;
+                            if (selectedItems.Count <= 0) continue;
+                            List<FilterCategory> filters = ((SearchFilterMultiChoice)categories[selectedCategory]).Filters[ms.Label];
+                            foreach (FilterCategory filter in filters)
                             {
-                                if (!items.ContainsKey(filter.DataParam)) items.Add(filter.DataParam, new Dictionary<string, List<string>>());
-                                if (!items[filter.DataParam].ContainsKey(filter.DataPrefix)) items[filter.DataParam].Add(filter.DataPrefix, new List<string>());
+                                if (selectedItems.Contains(filter.Name))
+                                {
+                                    if (!items.ContainsKey(filter.DataParam)) items.Add(filter.DataParam, new Dictionary<string, List<string>>());
+                                    if (!items[filter.DataParam].ContainsKey(filter.DataPrefix)) items[filter.DataParam].Add(filter.DataPrefix, new List<string>());
 
-                                items[filter.DataParam][filter.DataPrefix].Add(filter.Value);
+                                    items[filter.DataParam][filter.DataPrefix].Add(filter.Value);
+                                }
                             }
-                        }
-                        break;
+                            break;
+                    }
                 }
-            }
 
-            searchResults = ScheduleSearch.SearchFilters(dataType, items);
+                searchResults = ScheduleSearch.SearchFilters(dataType, items);
         }
 
         async void ShowFilteredItems(object sender, EventArgs args)
         {
-            MultiSelectList filteredList = new MultiSelectList();
-            filteredList.OnCheckedChanged += OnSelectedItemsChanged;
-            if (searchResults == null) filteredList.ItemsList.ItemsSource = new List<string>();
-            else
-            {
-                List<CheckedListItem> items = new List<CheckedListItem>();
-                foreach(KeyValuePair<string, string> itemKvp in searchResults) 
-                    items.Add(new CheckedListItem { Title = itemKvp.Key, IsChecked = enabledGroups.Values.Contains(itemKvp.Value) });
+            // Run the function asynchronously to prevent GUI blocking
+                MultiSelectList filteredList = new MultiSelectList();
+                filteredList.OnCheckedChanged += OnSelectedItemsChanged;
+                if (searchResults == null) filteredList.ItemsList.ItemsSource = new List<string>();
+                else
+                {
+                    List<CheckedListItem> items = new List<CheckedListItem>();
+                    foreach (KeyValuePair<string, string> itemKvp in searchResults)
+                        items.Add(new CheckedListItem { Title = itemKvp.Key, IsChecked = EnabledGroups.Values.Contains(itemKvp.Value) });
 
-                filteredList.ItemsList.ItemsSource = items;
-            }
-            await Navigation.PushModalAsync(new NavigationPage(filteredList) { Title = "Item Selection" });
+                    filteredList.ItemsList.ItemsSource = items;
+                }
+                Navigation.PushModalAsync(new NavigationPage(filteredList) { Title = "Item Selection" });
         }
 
         async void OnSelectedItemsChanged(object sender, EventArgs args)
         {
-            CheckedListItem item = sender as CheckedListItem;
-            if(item.IsChecked)
-            {
-                enabledGroups.Add(item.Title, searchResults[item.Title]);
-            }
-            else if (enabledGroups.ContainsKey(item.Title)) enabledGroups.Remove(item.Title);
-            EnabledGroupsChanged?.Invoke(this, null);
+            // Run the function asynchronously to prevent GUI blocking
+                CheckedListItem item = sender as CheckedListItem;
+                if (item.IsChecked)
+                {
+                    EnabledGroups.Add(item.Title, searchResults[item.Title]);
+                }
+                else if (EnabledGroups.ContainsKey(item.Title)) EnabledGroups.Remove(item.Title);
+                EnabledGroupsChanged?.Invoke(this, null);
         }
 
     }

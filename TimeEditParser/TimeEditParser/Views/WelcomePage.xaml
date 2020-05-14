@@ -8,10 +8,11 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
             <Label Text="Welcome to Xamarin.Forms!"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                HorizontalOptions="CenterAndExpand" 
+                TextColor="{DynamicResource PrimaryTextColor}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -42,7 +42,7 @@ namespace TimeEditParser.Utilities
             HtmlNode filtersList = doc.DocumentNode.SelectSingleNode(".//select[@id='fancytypeselector']");
             foreach(HtmlNode filterOption in filtersList.SelectNodes(".//option"))
             {
-                FilterCategoryDropDown currentCategory = new FilterCategoryDropDown();
+                SearchFilterMultiChoice currentCategory = new SearchFilterMultiChoice();
                 // <option value="183" selected="">Klass</option>
                 currentCategory.Name = filterOption.InnerText;
                 currentCategory.Value = filterOption.Attributes["value"].Value;

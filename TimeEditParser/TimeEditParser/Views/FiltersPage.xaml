@@ -4,22 +4,23 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="TimeEditParser.Views.FiltersPage">
+             x:Class="TimeEditParser.Views.FiltersPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <StackLayout>
             
             <Label Text="Lesson Name Filters"
-                HorizontalOptions="CenterAndExpand" />
-            
-            <ListView x:Name="FilteredNamesListView">
+                HorizontalOptions="CenterAndExpand" TextColor="{DynamicResource PrimaryTextColor}"/>
+
+            <ListView x:Name="FilteredNamesListView" BackgroundColor="{DynamicResource PageBackgroundColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <ViewCell >
                             <ViewCell.ContextActions>
                                 <MenuItem Clicked="OnDeleteName" CommandParameter="{Binding .}"
                                 Text="Delete" IsDestructive="True" />
                             </ViewCell.ContextActions>
-                            <StackLayout Padding="15,0">
+                            <StackLayout Padding="15,0" BackgroundColor="{DynamicResource PageBackgroundColor}">
                                 <Label Text="{Binding .}" />
                             </StackLayout>
                         </ViewCell>
@@ -29,8 +30,8 @@
 
             <Label Text="Lesson ID Filters"
                 HorizontalOptions="CenterAndExpand" />
-            
-            <ListView x:Name="FilteredIDsListView">
+
+            <ListView x:Name="FilteredIDsListView" BackgroundColor="{DynamicResource PageBackgroundColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -38,7 +39,7 @@
                                 <MenuItem Clicked="OnDeleteID" CommandParameter="{Binding .}"
                                 Text="Delete" IsDestructive="True" />
                             </ViewCell.ContextActions>
-                            <StackLayout Padding="15,0">
+                            <StackLayout Padding="15,0" BackgroundColor="{DynamicResource PageBackgroundColor}">
                                 <Label Text="{Binding .}" />
                             </StackLayout>
                         </ViewCell>

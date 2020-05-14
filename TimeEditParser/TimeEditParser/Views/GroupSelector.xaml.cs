@@ -39,7 +39,7 @@ namespace TimeEditParser.Views
 
         private void EnabledGroupsChanged(object sender, EventArgs args)
         {
-            EnabledGroups = selector.enabledGroups;
+            EnabledGroups = selector.EnabledGroups;
             UpdateListViewFilters();
         }
 

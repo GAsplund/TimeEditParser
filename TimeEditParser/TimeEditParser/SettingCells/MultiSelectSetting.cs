@@ -9,7 +9,6 @@ namespace TimeEditParser.SettingCells
 {
     class MultiSelectSetting : SubMenuSetting
     {
-        int selectedItems = 0;
         public MultiSelectSetting(INavigation navigation) : base(navigation, new MultiSelectList())
         {
             parentNav = navigation;
