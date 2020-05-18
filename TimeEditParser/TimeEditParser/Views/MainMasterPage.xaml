@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:TimeEditParser.Models"
+             xmlns:views="clr-namespace:TimeEditParser.Views"
+             x:Class="TimeEditParser.Views.MainMasterPage"
+             Title="TimeEdit Parser">
+    <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
+        <Label Text="TimeEdit Parser" TextColor="{DynamicResource PrimaryTextColor}" FontSize="36" HorizontalOptions="CenterAndExpand" Margin="5"/>
+        <ListView x:Name="listView" x:FieldModifier="public" BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <ListView.ItemsSource>
+                <x:Array Type="{x:Type local:MasterPageItem}">
+                    <local:MasterPageItem Title="Schedule" IconSource="contacts.png" TargetType="{x:Type views:SchedulePage}" />
+                    <local:MasterPageItem Title="Filters" IconSource="reminders.png" TargetType="{x:Type views:FiltersPage}" />
+                    <local:MasterPageItem Title="Settings" IconSource="contacts.png" TargetType="{x:Type views:SettingsPage}" />
+                    <local:MasterPageItem Title="About" IconSource="todo.png" TargetType="{x:Type views:AboutPage}" />
+                </x:Array>
+            </ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="5,10" BackgroundColor="{DynamicResource PageBackgroundColor}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!--<Image Source="{Binding IconSource}" />-->
+                            <Label Grid.Column="1" Text="{Binding Title}" TextColor="{DynamicResource PrimaryTextColor}" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

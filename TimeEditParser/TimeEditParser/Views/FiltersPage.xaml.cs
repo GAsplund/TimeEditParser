@@ -15,26 +15,49 @@ namespace TimeEditParser.Views
         public FiltersPage()
         {
             InitializeComponent();
-            FilteredNamesListView.ItemsSource = ApplicationSettings.FilterNames.ToArray();
-            FilteredIDsListView.ItemsSource = ApplicationSettings.FilterIDs.ToArray();
+            FilterTypePicker.Items.Add("Names");
+            FilterTypePicker.Items.Add("IDs");
         }
 
-        void OnDeleteName(object sender, EventArgs e)
+        void FilterTypeIndexChanged(object sender, EventArgs e)
         {
-            var args = (MenuItem)sender;
-            List<string> NameList = ApplicationSettings.FilterNames;
-            NameList.Remove(args.CommandParameter.ToString());
-            ApplicationSettings.FilterNames = NameList;
-            FilteredNamesListView.ItemsSource = ApplicationSettings.FilterNames.ToArray();
+            Picker picker = (Picker)sender;
+            switch (picker.SelectedIndex)
+            {
+                case 0: // Names
+                    FiltersListView.ItemsSource = ApplicationSettings.FilterNames.ToArray();
+                    break;
+                case 1: // IDs
+                    FiltersListView.ItemsSource = ApplicationSettings.FilterIDs.ToArray();
+                    break;
+                default:
+                    FiltersListView.ItemsSource = null;
+                    break;
+            }
         }
 
-        void OnDeleteID(object sender, EventArgs e)
+        void OnDeleteFilterItem(object sender, EventArgs e)
         {
             var args = (MenuItem)sender;
-            List<string> IDList = ApplicationSettings.FilterIDs;
-            IDList.Remove(args.CommandParameter.ToString());
-            ApplicationSettings.FilterIDs = IDList;
-            FilteredIDsListView.ItemsSource = ApplicationSettings.FilterIDs.ToArray();
+            switch (FilterTypePicker.SelectedIndex)
+            {
+                case 0: // Names
+                    List<string> IDsList = ApplicationSettings.FilterNames;
+                    IDsList.Remove(args.CommandParameter.ToString());
+                    ApplicationSettings.FilterNames = IDsList;
+                    FiltersListView.ItemsSource = ApplicationSettings.FilterNames.ToArray();
+                    break;
+                case 1: // IDs
+                    List<string> NamesList = ApplicationSettings.FilterIDs;
+                    NamesList.Remove(args.CommandParameter.ToString());
+                    ApplicationSettings.FilterIDs = NamesList;
+                    FiltersListView.ItemsSource = ApplicationSettings.FilterIDs.ToArray();
+                    break;
+                default:
+                    break;
+            }
+
+            
         }
     }
 }

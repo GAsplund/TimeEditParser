@@ -97,6 +97,9 @@
   <ItemGroup>
     <Compile Include="NotifDismissBroadcastReceiver.cs" />
     <Compile Include="NotificationDroid.cs" />
+    <Compile Include="Renderers\ColoredSearchBarRenderer.cs" />
+    <Compile Include="Renderers\ColoredTableViewRenderer.cs" />
+    <Compile Include="Renderers\EntryBorderRenderer.cs" />
     <Compile Include="ScheduleBroadcastReceiver.cs" />
     <None Include="ServiceCheckerDroid.cs" />
     <Compile Include="Theming.cs" />

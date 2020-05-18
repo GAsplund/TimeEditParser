@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TimeEditParser.Models
 {
-    class CheckedListItem : INotifyPropertyChanged
+    public class CheckedListItem : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

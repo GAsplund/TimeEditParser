@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TimeEditParser.CustomObjects;
 using Xamarin.Forms;
 
 namespace TimeEditParser.SettingCells
@@ -9,8 +10,9 @@ namespace TimeEditParser.SettingCells
     {
         public TextSetting()
         {
-            TextBox = new Entry();
-            TextBox.SetDynamicResource(Entry.TextColorProperty, "PrimaryTextColor");
+            TextBox = new ColoredEntry();
+            TextBox.SetDynamicResource(ColoredEntry.TextColorProperty, "PrimaryTextColor");
+            TextBox.SetDynamicResource(ColoredEntry.BorderColorProperty, "ListViewSeparatorColor");
         }
         internal View TextBox
         {
@@ -28,24 +30,24 @@ namespace TimeEditParser.SettingCells
         {
             get
             {
-                return (TextBox as Entry).Text;
+                return (TextBox as ColoredEntry).Text;
             }
             set
             {
-                (TextBox as Entry).Text = value;
+                (TextBox as ColoredEntry).Text = value;
             }
         }
 
         public event EventHandler Completed
         {
-            add { (Element as Entry).Completed += value; }
-            remove { (Element as Entry).Completed -= value; }
+            add { (Element as ColoredEntry).Completed += value; }
+            remove { (Element as ColoredEntry).Completed -= value; }
         }
 
         public string Placeholder
         {
-            get { return (TextBox as Entry).Placeholder; }
-            set { (TextBox as Entry).Placeholder = value; }
+            get { return (TextBox as ColoredEntry).Placeholder; }
+            set { (TextBox as ColoredEntry).Placeholder = value; }
         }
 
     }

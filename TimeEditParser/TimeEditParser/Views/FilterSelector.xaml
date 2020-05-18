@@ -4,11 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:TimeEditParser.SettingCells"
+             xmlns:custom="clr-namespace:TimeEditParser.CustomObjects"
              mc:Ignorable="d"
              x:Class="TimeEditParser.Views.FilterSelector"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
-        <TableView BackgroundColor="{DynamicResource PageBackgroundColor}" x:Name="FiltersTableView">
+        <custom:ColoredTableView SeparatorColor="{DynamicResource ListViewSeparatorColor}" BackgroundColor="{DynamicResource PageBackgroundColor}" x:Name="FiltersTableView">
             <TableRoot>
                 <TableSection Title="Filter Type" TextColor="{DynamicResource PrimaryTextColor}">
                     <local:PickerSetting Label="Type" x:Name="FilterTypePickerSetting"/>
@@ -16,7 +17,7 @@
                 <TableSection Title="Filter Settings" TextColor="{DynamicResource PrimaryTextColor}"/>
                 <TableSection Title="Search Results" x:Name="SearchResultsSection" TextColor="{DynamicResource PrimaryTextColor}"/>
             </TableRoot>
-        </TableView>
+        </custom:ColoredTableView>
         
     </ContentPage.Content>
 </ContentPage>

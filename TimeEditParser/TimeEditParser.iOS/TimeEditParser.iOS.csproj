@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renderers\ColoredTableViewRenderer.cs" />
+    <Compile Include="Renderers\ColoredSearchBarRenderer.cs" />
     <Compile Include="Theming.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />

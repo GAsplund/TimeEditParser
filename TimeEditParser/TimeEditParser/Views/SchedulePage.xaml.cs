@@ -95,8 +95,9 @@ namespace TimeEditParser.Views
                         AddScheduleWeek(schedule, false, ScheduleWeekItem);
                     }
                 }
-                // Set the ItemsSource of the ListView with the schedule items
-                scheduleList.ScheduleListView.ItemsSource = ScheduleWeekItem;
+                // Set the ItemsSource of the ListView with the schedule items if it changed
+                if(ScheduleWeekItem != scheduleList.ScheduleListView.ItemsSource)
+                    scheduleList.ScheduleListView.ItemsSource = ScheduleWeekItem;
             }
             catch (Exception e)
             {

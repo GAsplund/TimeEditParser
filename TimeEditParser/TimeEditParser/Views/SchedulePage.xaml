@@ -5,11 +5,6 @@
               Title="Schedule"
               x:Name="BrowseItemsPage"
               BackgroundColor="Black">
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filters" Clicked="LaunchFiltersPage" />
-    </ContentPage.ToolbarItems>
-    
     <ContentView x:Name="ScheduleContentView"/>
     
 </ContentPage>

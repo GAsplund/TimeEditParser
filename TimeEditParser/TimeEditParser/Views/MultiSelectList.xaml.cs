@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,24 @@ namespace TimeEditParser.Views
         }
 
         public HashSet<string> checkedItems = new HashSet<string>();
+
+        public void SearchArgChanged(object sender, EventArgs args)
+        {
+            FilterSearchResults();
+        }
+
+        private void FilterSearchResults()
+        {
+            if (string.IsNullOrEmpty(SearchBar.Text)) ItemsList.ItemsSource = itemsSource;
+            else ItemsList.ItemsSource = itemsSource.Where(c => c.Title.StartsWith(SearchBar.Text));
+        }
+
+        private List<CheckedListItem> itemsSource = new List<CheckedListItem>();
+
+        public List<CheckedListItem> ItemsSource 
+        {
+            get => itemsSource; set { itemsSource = value; ItemsList.ItemsSource = value; FilterSearchResults(); }
+        }
 
         public void OnItemSelected(object sender, EventArgs args)
         {

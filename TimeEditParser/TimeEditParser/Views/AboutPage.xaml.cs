@@ -8,7 +8,7 @@ namespace TimeEditParser.Views
 {
     public partial class AboutPage : ContentPage
     {
-        public string StatusText { set { StatusLabel.Text = value; } }
+        //public string StatusText { set { StatusLabel.Text = value; } }
         public AboutPage()
         {
             InitializeComponent();

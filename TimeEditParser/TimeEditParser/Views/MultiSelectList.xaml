@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:TimeEditParser.CustomObjects"
              mc:Ignorable="d"
              x:Class="TimeEditParser.Views.MultiSelectList"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
         <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
-            <SearchBar Placeholder="Search items..."/>
-            <ListView x:Name="ItemsList" x:FieldModifier="public" BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <custom:ColoredSearchBar x:Name="SearchBar" IconColor="{DynamicResource ListViewSeparatorColor}" PlaceholderColor="{DynamicResource SecondaryTextColor}" Placeholder="Search items..." TextColor="{DynamicResource PrimaryTextColor}" TextChanged="SearchArgChanged"/>
+            <ListView x:Name="ItemsList" x:FieldModifier="public" BackgroundColor="{DynamicResource PageBackgroundColor}" SeparatorColor="{DynamicResource ListViewSeparatorColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

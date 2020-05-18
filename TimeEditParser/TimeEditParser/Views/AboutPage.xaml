@@ -4,7 +4,7 @@
              x:Class="TimeEditParser.Views.AboutPage"
              xmlns:vm="clr-namespace:TimeEditParser.ViewModels"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
-             Title="Home">
+             Title="About">
     
     <ContentPage.BindingContext>
         <vm:AboutViewModel />
@@ -53,21 +53,7 @@
                     </Label.FormattedText>
                 </Label>
 
-                <Label TextColor="{DynamicResource PrimaryTextColor}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="To set up the app, go to settings and enter a valid link for searching for TimeEdit schedules. Press Done or Enter. If your link was valid, you can now choose a group from the " />
-                                <Span Text="Schedule group" FontAttributes="Bold" />
-                                <Span Text=" setting. When a group has been chosen, you should now be able to update and utilize the schedule. " />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-
-                <Label x:Name="StatusLabel" TextColor="{DynamicResource PrimaryTextColor}">(Reserved space for current lesson status)</Label>
-                
-                </StackLayout>
+            </StackLayout>
         </ScrollView>
         <!--<Label Text="Schedule checked at 13:37" VerticalOptions="End"/>-->
     </Grid>

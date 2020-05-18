@@ -9,10 +9,22 @@
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
-            <Label Text="Welcome to Xamarin.Forms!"
+            <Label Text="Welcome to TimeEdit Parser!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" 
                 TextColor="{DynamicResource PrimaryTextColor}"/>
+            
+            <Label TextColor="{DynamicResource PrimaryTextColor}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="To set up the app, go to settings and enter a valid link for searching for TimeEdit schedules. Press Done or Enter. If your link was valid, you can now choose a group from the " />
+                            <Span Text="Schedule group" FontAttributes="Bold" />
+                            <Span Text=" setting. When a group has been chosen, you should now be able to update and utilize the schedule. " />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

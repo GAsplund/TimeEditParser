@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="TimeEditParser.Views.SettingsPage" Title="Settings"
              xmlns:local="clr-namespace:TimeEditParser.SettingCells"
+             xmlns:custom="clr-namespace:TimeEditParser.CustomObjects"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
-        <TableView Intent="Settings" BackgroundColor="{DynamicResource PageBackgroundColor}">
+        <custom:ColoredTableView SeparatorColor="{DynamicResource ListViewSeparatorColor}" Intent="Settings" BackgroundColor="{DynamicResource PageBackgroundColor}">
         <TableRoot>
 
                 <TableSection Title="TimeEdit" x:Name="TimeEditTableSection" TextColor="{DynamicResource PrimaryTextColor}">
@@ -27,6 +28,6 @@
                 </TableSection>
             
             </TableRoot>
-        </TableView>
+        </custom:ColoredTableView>
     </ContentPage.Content>
 </ContentPage>

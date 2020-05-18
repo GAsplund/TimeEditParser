@@ -7,46 +7,33 @@
              x:Class="TimeEditParser.Views.FiltersPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
             
-            <Label Text="Lesson Name Filters"
-                HorizontalOptions="CenterAndExpand" TextColor="{DynamicResource PrimaryTextColor}"/>
+            <Label Text="Filter Type"
+                    HorizontalOptions="CenterAndExpand" 
+                    TextColor="{DynamicResource PrimaryTextColor}"/>
+            
+            <Picker x:Name="FilterTypePicker" SelectedIndexChanged="FilterTypeIndexChanged" 
+                    TextColor="{DynamicResource PrimaryTextColor}" 
+                    BackgroundColor="{DynamicResource PageBackgroundColor}" 
+                    TitleColor="{DynamicResource PrimaryTextColor}"/>
 
-            <ListView x:Name="FilteredNamesListView" BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <ListView x:Name="FiltersListView" BackgroundColor="{DynamicResource PageBackgroundColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell >
                             <ViewCell.ContextActions>
-                                <MenuItem Clicked="OnDeleteName" CommandParameter="{Binding .}"
+                                <MenuItem Clicked="OnDeleteFilterItem" CommandParameter="{Binding .}"
                                 Text="Delete" IsDestructive="True" />
                             </ViewCell.ContextActions>
                             <StackLayout Padding="15,0" BackgroundColor="{DynamicResource PageBackgroundColor}">
-                                <Label Text="{Binding .}" />
+                                <Label Text="{Binding .}" TextColor="{DynamicResource PrimaryTextColor}"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            <Label Text="Lesson ID Filters"
-                HorizontalOptions="CenterAndExpand" />
-
-            <ListView x:Name="FilteredIDsListView" BackgroundColor="{DynamicResource PageBackgroundColor}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Clicked="OnDeleteID" CommandParameter="{Binding .}"
-                                Text="Delete" IsDestructive="True" />
-                            </ViewCell.ContextActions>
-                            <StackLayout Padding="15,0" BackgroundColor="{DynamicResource PageBackgroundColor}">
-                                <Label Text="{Binding .}" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -83,7 +83,7 @@ namespace TimeEditParser.Views
                         {
                             items.Add(new CheckedListItem { Title = category.Name, IsChecked = EnabledGroups.Keys.Contains(category.Name) });
                         }
-                        list.ItemsList.ItemsSource = items;
+                        list.ItemsSource = items;
                         //PickerSetting groupPickerSetting = new PickerSetting() { Picker = groupPicker, Label = valuePair.Key };
 
                         section.Add(multiSelectSetting);
@@ -133,18 +133,18 @@ namespace TimeEditParser.Views
         async void ShowFilteredItems(object sender, EventArgs args)
         {
             // Run the function asynchronously to prevent GUI blocking
-                MultiSelectList filteredList = new MultiSelectList();
-                filteredList.OnCheckedChanged += OnSelectedItemsChanged;
-                if (searchResults == null) filteredList.ItemsList.ItemsSource = new List<string>();
-                else
-                {
-                    List<CheckedListItem> items = new List<CheckedListItem>();
-                    foreach (KeyValuePair<string, string> itemKvp in searchResults)
-                        items.Add(new CheckedListItem { Title = itemKvp.Key, IsChecked = EnabledGroups.Values.Contains(itemKvp.Value) });
+            MultiSelectList filteredList = new MultiSelectList();
+            filteredList.OnCheckedChanged += OnSelectedItemsChanged;
+            if (searchResults == null) filteredList.ItemsSource = new List<CheckedListItem>();
+            else
+            {
+                List<CheckedListItem> items = new List<CheckedListItem>();
+                foreach (KeyValuePair<string, string> itemKvp in searchResults)
+                    items.Add(new CheckedListItem { Title = itemKvp.Key, IsChecked = EnabledGroups.Values.Contains(itemKvp.Value) });
 
-                    filteredList.ItemsList.ItemsSource = items;
-                }
-                Navigation.PushModalAsync(new NavigationPage(filteredList) { Title = "Item Selection" });
+                filteredList.ItemsSource = items;
+            }
+            await Navigation.PushModalAsync(new NavigationPage(filteredList) { Title = "Item Selection" });
         }
 
         async void OnSelectedItemsChanged(object sender, EventArgs args)

@@ -9,8 +9,8 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="{DynamicResource PageBackgroundColor}">
             <Button Text="Filters" Clicked="SelectFilters"/>
-            <Label Text="Current schedule items:"/>
-            <ListView x:Name="GroupsList" x:FieldModifier="public" BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <Label Text="Current schedule items:" TextColor="{DynamicResource PrimaryTextColor}"/>
+            <ListView x:Name="GroupsList" x:FieldModifier="public" BackgroundColor="{DynamicResource PageBackgroundColor}" SeparatorColor="{DynamicResource ListViewSeparatorColor}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
